@@ -15,7 +15,6 @@ $("#play").click(function(){
     console.log(input)
     $("#screen").empty();
     $("#screen").append(input);
-    renderMap();
 
 })
 
@@ -67,24 +66,47 @@ function renderMap(direction){
             room = "map_0"
             break;
         case 1:
+            if (direction === "down"){
+                placement= 5
+                room = "map_5"
+            }
+            else{
             room = "map_1"
+            }
             break;
         case 2:
             room = "map_2"
             break;
         case 3:
+            if (direction === "down"){
+                placement =7
+            }
+            else{
             room = "map_3"
+            }
             break;
 
         case 5:
-            room = "map_5"
+            console.log("5 ", direction)
+            if (direction === "up"){
+                placement = 1;
+                room = "map_1"
+            }
+            if (direction === "left"){
+            room = "map_5" 
+            }
             break;
         case 6:
             room = "map_6"
             break;
 
         case 7:
-            room = "map_7"
+            if (direction === "up"){
+                placement = 3
+            }
+            else{
+            room = "map_7"                
+            }
             break;
         case 8:
             room = "map_8"
@@ -99,33 +121,77 @@ function renderMap(direction){
             room = "map_6"
             placement=6
             }
+            if (direction==="left"){
+            placement=11
+            }
             break;
         case 13:
             room = "map_13"
             break;
         case 11:
+            if (direction === "down"){
+                placement = 15
+            }
+            else{
             room = "map_11"
+            }
             break;
         case 14:
             room = "map_14"
             break;
         case 15:
+            if (direction === "up"){
+                placement = 11;
+            }
+            else{
             room = "map_15"
+            }
             break;
 
         case 16:
             room = "map_16"
             break;
         case 17:
-            room = "map_17"
+            switch (direction) {
+                case "up" :
+                    room = "map_17"
+                    break;
+                case  "down":
+                    room = "map_17"
+                    break;
+                case "left":
+                    placement=placement+1;
+                    break;
+                case "right":
+                    placement=placement-1;
+                    break;            
+                default:
+                    break;
+            }
+            
             break;
 
             
         case 18:
+            if (direction === "left"){
+                placement = 19
+                room = "map_19"
+            }
+            if (direction === "right"){
+                placement = 17
+            }
+            if (direction === "up"){
             room = "map_18"
+            }
             break;
         case 19:
-            room = "map_19"    
+            if (direction === "right"){
+                placement = 18
+                room = "map_18"
+            }
+            else{
+            room = "map_19"
+            } 
             break;
       
         case 21:
@@ -169,6 +235,14 @@ function renderMap(direction){
     $("#mapScreen").empty();
     $("#mapScreen").append(map);
 
+    renderRoom(room)
+
 }
 
 renderMap()
+
+
+function renderRoom(roomNumber){
+
+
+}
