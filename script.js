@@ -2,7 +2,135 @@
 // var test = $("<h1>")
 // test.append("Hello")
 var room = "map_0"
+var inventory = [];
+var allMaps = ["map_0",
+                "map_1",
+                "map_2",
+                "map_3",
+                "map_5",
+                "map_6",
+                "map_7",
+                "map_8",
+                "map_11",
+                "map_13",
+                "map_14",
+                "map_15",
+                "map_16",
+                "map_17",
+                "map_18",
+                "map_19",
+                "map_21",
+                "map_25"                                 
+                ]
 
+var allRoomNames = [
+                    "Front Door",
+                    "Dining Room",
+                    "Entry Way",
+                    "Kitchen",
+                    "Mummy Room",
+                    "Hall 1",
+                    "Bedroom",
+                    "Closet",
+                    "Bathroom",
+                    "Safe Room",
+                    "Hall 2",
+                    "Stairs",
+                    "Basement",
+                    "Side Yard",
+                    "Piano Room",
+                    "Attic",
+                    "Treehouse",
+                    "Backyard"
+                    ]    
+                    
+var status1= [
+    "Nothing out of the oridinary",
+    "Werewolf, dog whistle",
+    "Doors to the West, North, and East",
+    "Silverware scattered about, a small flame coming from stove",
+    "A Mummy covered in gaws, a sun shaped amulet",
+    "A scary clown toy",
+    "A Coffin, a Pillow",
+    "A skeleton, a vaccum cleaner",
+    'A mirror, Toilete Paper',
+    "A locked Safe with a voice activated password",
+    "Nothing out of the oridinary",
+    "Nothing out of the ordinary",
+    "A Blacksmith Kiln, bullet mold, no fire",
+    "Nothing to see here",
+    "Vampire, Piano with hammers",
+    "Ghost, a hole for amulet",
+    "Spot for mirror",
+    "Dog with stick"
+
+]
+
+var status2= [
+    "Nothing out of the oridinary",
+    "Dead Werewolf, dog whistle",
+    "Doors to the West, North, and East",
+    "A small flame coming from stove",
+    "A sun shaped amulet",
+    "Nothing to see here",
+    "A Coffin",
+    "A vaccum cleaner",
+    'Toilete Paper*',
+    "An open safe with a gun",
+    "Nothing out of the oridinary",
+    "Nothing out of the ordinary",
+    "A Blacksmith Kiln, bullet mold, on fire",
+    "Nothing to see here",
+    "Piano with hammers",
+    "A hole for amulet",
+    "Mirror, not reflecting anything",
+    "Dog with Squeky toy, stick on ground"
+
+]
+
+var status3= [
+    "Nothing out of the oridinary",
+    "Dead Werewolf",
+    "Doors to the West, North, and East",
+    "A small flame coming from stove",
+    "Dead Mummy",
+    "Nothing to see here",
+    "A Coffin with a vampire sleeping in it",
+    "Dead skeleton",
+    'Mirror*',
+    "An open, empty safe",
+    "Nothing out of the oridinary",
+    "Nothing out of the ordinary",
+    "A Blacksmith Kiln, bullet mold, on fire",
+    "Nothing to see here",
+    "Piano with hammer removed",
+    "A hole filled with an amulet",
+    "Mirror, reflecting the amulet",
+    "Dog with Squeky toy"
+
+]
+
+var status3= [
+    "Nothing out of the oridinary",
+    "Dead Werewolf",
+    "Doors to the West, North, and East",
+    "A small flame coming from stove",
+    "Dead Mummy",
+    "Nothing to see here",
+    "A Coffin with a dead vampire",
+    "Dead skeleton",
+    'Empty Bathroom',
+    "An open, empty safe",
+    "Nothing out of the oridinary",
+    "Nothing out of the ordinary",
+    "A Blacksmith Kiln, bullet mold, on fire",
+    "Nothing to see here",
+    "Piano with hammer removed",
+    "A hole filled with an amulet",
+    "Mirror, reflecting the amulet",
+    "Dog with Squeky toy"
+
+]
 $("#screen").append("Hello There")
 
 var placement=-2;
@@ -13,8 +141,26 @@ $("#play").click(function(){
 
     var input = $("#command").val();
     console.log(input)
+
+    var message;
+
+    switch (room) {
+        case "map_0":
+            if (input.includes("open")){
+            message = "The door is open"
+            break;
+            }
+
+    
+        default:
+            message = "You can't do that"
+            break;
+    }
+
+
+
     $("#screen").empty();
-    $("#screen").append(input);
+    $("#screen").append(message);
 
 })
 
@@ -244,5 +390,18 @@ renderMap()
 
 function renderRoom(roomNumber){
 
+
+
+
+var indexNumber = allMaps.indexOf(roomNumber)
+var currentRoomName = allRoomNames[indexNumber]
+
+var renderRoomName = $("<h2>")
+                    .text(currentRoomName)
+var briefDescription = $("<p>")
+                    .text(status1[indexNumber])
+$("#displayRoom").empty()
+$("#displayRoom").append(renderRoomName)
+$("#displayRoom").append(briefDescription)
 
 }
