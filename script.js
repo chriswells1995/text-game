@@ -118,7 +118,7 @@ var status3= [
 
 ]
 
-var status3= [
+var status4= [
     "Nothing out of the oridinary",
     "Dead Werewolf",
     "Doors to the West, North, and East",
@@ -268,25 +268,41 @@ $("#play").click(function(){
                 break;
             }
         case "map_13":
-            if (input.includes("open")){
-            message = "The door is open"
-            break;
+            if ((currentStatus[9] === status1[9] )
+            && input.includes("swordfish")
+            && inventory.includes("Password")){
+                message = "You unloced the safe! It looks like there's a gun inside!"
+                currentStatus[9] = status2[9]
+                break;
             }
-        case "map_14":
-            if (input.includes("open")){
-            message = "The door is open"
-            break;
+            if ((currentStatus[9] === status2[9] )
+            && input.includes("gun")
+            && inventory.includes("Password")){
+                message = "You picked up the gun! No bullets though."
+                currentStatus[9] = status3[9]
+                inventory.push("Empty_Gun")
+                break;
             }
-        case "map_15":
-            if (input.includes("open")){
-            message = "The door is open"
-            break;
-            }
+            //TODO: create if statement for if they have the gun already or not
+            
+
         case "map_16":
-            if (input.includes("open")){
-            message = "The door is open"
-            break;
+            if ((currentStatus[12] === status1[12] )
+            && (input.includes("light") || input.includes("fire")  ||  input.includes('torch'))
+            && inventory.includes("Torch")){
+                message = "You lit the Blacksmith Kiln! Now you can forge something!"
+                currentStatus[12] = status2[12]
+                break;
             }
+            if ((currentStatus[12] === status2[12] )
+            && (input.includes("silverware") )
+            && inventory.includes("Silverware")){
+                message = "You forged a silver bullet out of the Silverware!"
+                inventory.replace("Silverware", "")
+                break;
+            }
+            //TODO: create if statement for if they have the gun already or not
+
         case "map_17":
             if (input.includes("open")){
             message = "The door is open"
@@ -321,6 +337,8 @@ $("#play").click(function(){
 
     $("#screen").empty();
     $("#screen").append(message);
+
+    console.log(inventory)
 
 })
 
