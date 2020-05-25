@@ -438,6 +438,8 @@ $("#play").click(function(){
     $("#screen").empty();
     $("#screen").append(message);
 
+    renderRoom(room)
+
     console.log(inventory)
 
 })
@@ -677,7 +679,7 @@ var currentRoomName = allRoomNames[indexNumber]
 var renderRoomName = $("<h2>")
                     .text(currentRoomName)
 var briefDescription = $("<p>")
-                    .text(status1[indexNumber])
+                    .text(currentStatus[indexNumber])
 $("#displayRoom").empty()
 $("#displayRoom").append(renderRoomName)
 $("#displayRoom").append(briefDescription)
