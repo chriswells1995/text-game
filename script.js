@@ -66,7 +66,7 @@ var status1= [
 
 ]
 
-var currentStatus = status1;
+var currentStatus = status1.map(element => element);
 
 var status2= [
     "Nothing out of the oridinary",
@@ -150,6 +150,8 @@ $("#play").click(function(){
     var input = $("#command").val().toLowerCase();
     console.log(input)
 
+    console.log("IMPORTANT")
+    console.log(status1[14])
     var message;
 
     switch (room) {
@@ -175,14 +177,18 @@ $("#play").click(function(){
             inventory.push("Silverware")
             break;
             }
-            else if (input.includes("fire") &&  inventory.includes("Unlit_Torch")){
+            else if ((input.includes("fire") || input.includes("light"))
+            && input.includes("torch")
+            &&  inventory.includes("Unlit_Torch")){
             message = "You lit your torch!"
-            inventory.replace("Unlit_Torch", "Lit_Torch")
+            inventory.push("Lit_Torch")
+            inventory = inventory.filter(item => item!=="Unlit_Torch")            
             break;
             }            
 
         case "map_5":
-            if ((input.includes("torch")  ||  input.includes("fire"))
+            if ((input.includes("torch")  ||  input.includes("fire") || input.includes("light"))
+            && input.includes("mummy")
             && inventory.includes("Lit_Torch")
             && currentStatus[4] === status1[4]){
             message = "You set the mummy on fire!"
@@ -193,6 +199,7 @@ $("#play").click(function(){
             && !inventory.includes("Amulet")
             && currentStatus[4] === status2[4]){
             message = "You picked up the amulet!"
+            inventory.push("Amulet")
             currentStatus[4] = status3[4]
             break;
             }            
@@ -244,8 +251,8 @@ $("#play").click(function(){
                 message = "You picked up toilet paper!"
                 if (inventory.includes("Stick")){
                     message = "You picked up toilet paper! Your stick fits perfectly inside, creating a torch! You just need something to light it."
-                    inventory.replace("Toilet_Paper", "Unlit_Torch")
-                    inventory.replace("Stick", "")
+                    inventory.push("Unlit_Torch")
+                    inventory = inventory.filter(item => item!=="Stick" && item!=="Toilet_Paper" )
                 }
                 break
             }
@@ -261,6 +268,11 @@ $("#play").click(function(){
                 message = "You picked up the toilet paper!"
                 currentStatus[8] = status4[8]
                 inventory.push("Toilet_Paper")
+                if (inventory.includes("Stick")){
+                    message = "You picked up toilet paper! Your stick fits perfectly inside, creating a torch! You just need something to light it."
+                    inventory.push("Unlit_Torch")
+                    inventory = inventory.filter(item => item!=="Stick" && item!=="Toilet_Paper" )
+                }
                 break;
             }    
             if ((currentStatus[8] === status3[8] )
@@ -287,8 +299,8 @@ $("#play").click(function(){
 
                 if (inventory.includes("Silver_Bullet")){
                      message = "You picked up the gun! And your silver bullet fits right in!"
-                      inventory.replace("Empty_Gun", "Loaded_Gun")
-                      inventory.replace("Silver Bullet" , "")
+                      inventory.push("Loaded_Gun")
+                      inventory = inventory.filter(item => item!=="Empty_Gun" && item!=="Silver_Bullet" )
 
                  }     
 
@@ -299,6 +311,7 @@ $("#play").click(function(){
         case "map_16":
             if ((currentStatus[12] === status1[12] )
             && (input.includes("light") || input.includes("fire")  ||  input.includes('torch'))
+            && !input.includes("mummy")
             && inventory.includes("Lit_Torch")){
                 message = "You lit the Blacksmith Kiln! Now you can forge something!"
                 currentStatus[12] = status2[12]
@@ -308,12 +321,13 @@ $("#play").click(function(){
             && (input.includes("silverware") )
             && inventory.includes("Silverware")){
                 message = "You forged a silver bullet out of the Silverware!"
-                inventory.replace("Silverware", "Silver_Bullet")
+                inventory.push("Silver_Bullet")
+                inventory = inventory.filter(item => item!=="Silverware")
 
                 if (inventory.includes("Empty_Gun")){
                     message = "You forged a silver bullet! If fits right into your gun!"
-                    inventory.replace("Empty_Gun", "Loaded_Gun")
-                    inventory.replace("Silver_Bullet", "")
+                    inventory.push("Loaded_Gun")
+                    inventory = inventory.filter(item => item!=="Empty_Gun" && item!=="Silver_Bullet" )
                 }
                 
                 break;
@@ -343,6 +357,7 @@ $("#play").click(function(){
            && currentStatus[15] === status1[15]
            && inventory.includes("Vacuum")){
                 message = "You sucked up the ghost!"
+                currentStatus[15] = status2[15]
             break;
             }
             if ((input.includes("amulet") )
@@ -356,11 +371,12 @@ $("#play").click(function(){
              && currentStatus[15] === status3[15]
              && inventory.includes("Amulet")){
                   message = "You light the amulet on fire. Your torch goes out, (it's more pointy than you remember) but it causes the amulet it to shine a light onto the treehouse!"
-                  inventory.replace("Lit_Torch", "Stake")
+                  inventory.push("Stake")
+                  inventory = inventory.filter(item => item!=="Lit_Torch")
                   currentStatus[15] = status4[15];                
                     if (currentStatus[16]=== status2[16]){
                         message = "You light the amulet on fire. Your torch goes out, (it's more pointy than you remember) but it causes the amulet to shine a light onto the mirror in the treehouse, reflecting into the piano room. You overhear the vampire say, SUNRISE ALREADY? I BETTER GET TO BED!"
-                        currentStatus[16] = status4[16];
+                        currentStatus[16] = status3[16];
                         currentStatus[14] = status2[14];
                         currentStatus[6] = status3[6];
 
@@ -377,7 +393,6 @@ $("#play").click(function(){
             && (input.includes("mirror")  )
             && inventory.includes("Mirror")){
                 message = "You place the mirror on the treehouse"
-                currentStatus[16] = status2[16];
                     if (currentStatus[15] === status4[15] && currentStatus[16]===status3[16]  ){
                         message = "You place the mirror on the treehouse, reflecting the light from the amulet into the piano room. You overhear the vampire say, SUNRISE ALREADY? I BETTER GET TO BED!"
                         currentStatus[16] = status4[16];
@@ -395,15 +410,7 @@ $("#play").click(function(){
             && inventory.includes("Clown_Toy")){
                 message = "You gave the dog the squeaky toy, and he dropped his stick!"
                 currentStatus[17] = status2[17]
-                // inventory.replace("Clown_Toy", "")
-                break;
-            }
-            if ((currentStatus[17] === status1[17] )
-            && (input.includes("clown") )
-            && inventory.includes("Clown_Toy")){
-                message = "You gave the dog the squeaky toy, and he dropped his stick!"
-                currentStatus[17] = status2[17]
-                // inventory.replace("Clown_Toy", "")
+                inventory = inventory.filter(item => item!=="Clown_Toy")                
                 break;
             }
             if ((currentStatus[17] === status2[17] )
@@ -416,8 +423,7 @@ $("#play").click(function(){
                     message = "You picked up the stick! It fits perfectly in the roll of TP, creating a torch! It just needs something to light it."
                     inventory.push("Unlit_Torch")
                     inventory = inventory.filter(item => item!=="Stick" && item!=="Toilet_Paper")
-                    // inventory.replace("Stick", "Unlit_Torch")
-                    // inventory.replace("Toilet_Paper", "")
+
                 }
 
                 break;
