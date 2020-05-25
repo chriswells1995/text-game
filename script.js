@@ -53,7 +53,7 @@ var status1= [
     "A scary clown toy",
     "A Coffin, a Pillow",
     "A skeleton, a vaccum cleaner",
-    'A mirror, Toilete Paper',
+    'A mirror, Toilet Paper',
     "A locked Safe with a voice activated password",
     "Nothing out of the oridinary",
     "Nothing out of the ordinary",
@@ -113,7 +113,7 @@ var status3= [
     "Nothing to see here",
     "Piano with hammer removed",
     "A hole filled with an amulet",
-    "Mirror, reflecting the amulet",
+    "The amulet's light shining on the treehouse",
     "Dog with Squeky toy"
 
 ]
@@ -134,8 +134,8 @@ var status4= [
     "A Blacksmith Kiln, bullet mold, on fire",
     "Nothing to see here",
     "Piano with hammer removed",
-    "A hole filled with an amulet",
-    "Mirror, reflecting the amulet",
+    "A hole filled with an amulet shining a light on the treehouse",
+    "Mirror, reflecting the amulet's light",
     "Dog with Squeky toy"
 
 ]
@@ -159,7 +159,7 @@ $("#play").click(function(){
             break;
             }
         case "map_1":
-            if (input.includes("shoot") && inventory.includes("Loaded Gun") && currentStatus[1]===status1[1]){
+            if (input.includes("shoot") && inventory.includes("Loaded_Gun") && currentStatus[1]===status1[1]){
             message = "You shot the werewolf!"
             currentStatus[1] = status2[1]
             break;
@@ -177,8 +177,7 @@ $("#play").click(function(){
             }
             else if (input.includes("fire") &&  inventory.includes("Unlit_Torch")){
             message = "You lit your torch!"
-            inventory.push("Lit_Torch")  
-            inventory.replace("Unlit_Torch", "")
+            inventory.replace("Unlit_Torch", "Lit_Torch")
             break;
             }            
 
@@ -207,7 +206,8 @@ $("#play").click(function(){
             }
         case "map_7":
             if ((input.includes("kill") || input.includes("stake"))
-            && currentStatus[6] === status3[6]){
+            && currentStatus[6] === status3[6]
+            && inventory.includes("Hammer")){
             message = "You killed the vampire! You win!"
             currentStatus[6] = status4[6]
             break;
@@ -219,9 +219,7 @@ $("#play").click(function(){
             inventory.push("Password")
             break;
             }
-            // if ((input.includes("vacuum") || input.includes("suck") )
-            // && currentStatus[7] === status1[7]
-            // && inventory.includes("Vacuum")){
+
         case "map_8":
             if ((input.includes("whistle") )
             && currentStatus[7] === status1[7]
@@ -244,6 +242,11 @@ $("#play").click(function(){
                 currentStatus[8] = status3[8]
                 inventory.push("Toilet_Paper")
                 message = "You picked up toilet paper!"
+                if (inventory.includes("Stick")){
+                    message = "You picked up toilet paper! Your stick fits perfectly inside, creating a torch! You just need something to light it."
+                    inventory.replace("Toilet_Paper", "Unlit_Torch")
+                    inventory.replace("Stick", "")
+                }
                 break
             }
             if (currentStatus[8] === status1[8]
@@ -281,15 +284,22 @@ $("#play").click(function(){
                 message = "You picked up the gun! No bullets though."
                 currentStatus[9] = status3[9]
                 inventory.push("Empty_Gun")
+
+                if (inventory.includes("Silver_Bullet")){
+                     message = "You picked up the gun! And your silver bullet fits right in!"
+                      inventory.replace("Empty_Gun", "Loaded_Gun")
+                      inventory.replace("Silver Bullet" , "")
+
+                 }     
+
                 break;
             }
-            //TODO: create if statement for if they have the gun already or not
-            
+          
 
         case "map_16":
             if ((currentStatus[12] === status1[12] )
             && (input.includes("light") || input.includes("fire")  ||  input.includes('torch'))
-            && inventory.includes("Torch")){
+            && inventory.includes("Lit_Torch")){
                 message = "You lit the Blacksmith Kiln! Now you can forge something!"
                 currentStatus[12] = status2[12]
                 break;
@@ -298,35 +308,119 @@ $("#play").click(function(){
             && (input.includes("silverware") )
             && inventory.includes("Silverware")){
                 message = "You forged a silver bullet out of the Silverware!"
-                inventory.replace("Silverware", "")
+                inventory.replace("Silverware", "Silver_Bullet")
+
+                if (inventory.includes("Empty_Gun")){
+                    message = "You forged a silver bullet! If fits right into your gun!"
+                    inventory.replace("Empty_Gun", "Loaded_Gun")
+                    inventory.replace("Silver_Bullet", "")
+                }
+                
                 break;
             }
-            //TODO: create if statement for if they have the gun already or not
 
-        case "map_17":
-            if (input.includes("open")){
-            message = "The door is open"
-            break;
-            }
         case "map_18":
-            if (input.includes("open")){
-            message = "The door is open"
-            break;
+            if (currentStatus[14] === status1[14] ){
+                message = "Before you could do that, the vampire rushes you, killing one of your friends. Then goes back to playing."
+                break;
+            }
+            if ((currentStatus[14] === status1[14] )
+            && (input.includes("fire")  || input.includes("torch") )
+            && input.includes("amulet")
+            && inventory.includes("Amulet")){
+                message = "You activated the amulet, shining the bright light, to no effect. Enraged, the vampire kills one of your friends. Perhaps this has a more deceptive use."
+                break;
+            }
+            if ((currentStatus[14] === status2[14] )
+            && input.includes("hammer")){
+                message = "You took one of the hammers from the piano!"
+                currentStatus[14] = status3[14]
+                inventory.push("Hammer")
+                break;
             }
         case "map_19":
-            if (input.includes("open")){
-            message = "The door is open"
+           if ((input.includes("vacuum") || input.includes("suck") )
+           && currentStatus[15] === status1[15]
+           && inventory.includes("Vacuum")){
+                message = "You sucked up the ghost!"
             break;
             }
+            if ((input.includes("amulet") )
+            && currentStatus[15] === status2[15]
+            && inventory.includes("Amulet")){
+                 message = "You put the amulet in the hole!"
+                 currentStatus[15] = status3[15];
+             break;
+             }
+             if ((input.includes("fire") || input.includes("torch") )
+             && currentStatus[15] === status3[15]
+             && inventory.includes("Amulet")){
+                  message = "You light the amulet on fire. Your torch goes out, (it's more pointy than you remember) but it causes the amulet it to shine a light onto the treehouse!"
+                  inventory.replace("Lit_Torch", "Stake")
+                  currentStatus[15] = status4[15];                
+                    if (currentStatus[16]=== status2[16]){
+                        message = "You light the amulet on fire. Your torch goes out, (it's more pointy than you remember) but it causes the amulet to shine a light onto the mirror in the treehouse, reflecting into the piano room. You overhear the vampire say, SUNRISE ALREADY? I BETTER GET TO BED!"
+                        currentStatus[16] = status4[16];
+                        currentStatus[14] = status2[14];
+                        currentStatus[6] = status3[6];
+
+                    }
+                    if (currentStatus[16]===status1[16]){
+                        currentStatus[16]= status3[16]
+                    }
+              break;
+              }
+
+
         case "map_21":
-            if (input.includes("open")){
-            message = "The door is open"
-            break;
+            if ((currentStatus[16] === status1[16] || currentStatus[16] === status3[16] )
+            && (input.includes("mirror")  )
+            && inventory.includes("Mirror")){
+                message = "You place the mirror on the treehouse"
+                currentStatus[16] = status2[16];
+                    if (currentStatus[15] === status4[15] && currentStatus[16]===status3[16]  ){
+                        message = "You place the mirror on the treehouse, reflecting the light from the amulet into the piano room. You overhear the vampire say, SUNRISE ALREADY? I BETTER GET TO BED!"
+                        currentStatus[16] = status4[16];
+                        currentStatus[14] = status2[14];
+                        currentStatus[6] = status3[6];
+                    }
+                    if (currentStatus[16]===status1[16]){
+                        currentStatus[16] = status2[16]
+                    }
+                break;
             }
         case "map_25":
-            if (input.includes("open")){
-            message = "The door is open"
-            break;
+            if ((currentStatus[17] === status1[17] )
+            && (input.includes("clown") )
+            && inventory.includes("Clown_Toy")){
+                message = "You gave the dog the squeaky toy, and he dropped his stick!"
+                currentStatus[17] = status2[17]
+                // inventory.replace("Clown_Toy", "")
+                break;
+            }
+            if ((currentStatus[17] === status1[17] )
+            && (input.includes("clown") )
+            && inventory.includes("Clown_Toy")){
+                message = "You gave the dog the squeaky toy, and he dropped his stick!"
+                currentStatus[17] = status2[17]
+                // inventory.replace("Clown_Toy", "")
+                break;
+            }
+            if ((currentStatus[17] === status2[17] )
+            && (input.includes("stick") )){
+                message = "You picked up the stick!"
+                currentStatus[17] = status3[17]
+                inventory.push("Stick")
+
+                if (inventory.includes("Toilet_Paper")){
+                    message = "You picked up the stick! It fits perfectly in the roll of TP, creating a torch! It just needs something to light it."
+                    inventory.push("Unlit_Torch")
+                    inventory = inventory.filter(item => item!=="Stick" && item!=="Toilet_Paper")
+                    // inventory.replace("Stick", "Unlit_Torch")
+                    // inventory.replace("Toilet_Paper", "")
+                }
+
+                break;
             }
         default:
             message = "You can't do that"
