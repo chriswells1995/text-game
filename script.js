@@ -160,6 +160,7 @@ $("#play").click(function(){
             message = "The door is open"
             break;
             }
+            break;
         case "map_1":
             if (input.includes("shoot") && inventory.includes("Loaded_Gun") && currentStatus[1]===status1[1]){
             message = "You shot the werewolf!"
@@ -171,6 +172,7 @@ $("#play").click(function(){
                 inventory.push("Dog_Whistle")
                 break;
             }
+            break;
         case "map_3":
             if (input.includes("silverware") &&  !inventory.includes("Silverware")){
             message = "You picked up the silverware"
@@ -186,6 +188,7 @@ $("#play").click(function(){
             break;
             }            
 
+            break;
         case "map_5":
             if ((input.includes("torch")  ||  input.includes("fire") || input.includes("light"))
             && input.includes("mummy")
@@ -203,6 +206,7 @@ $("#play").click(function(){
             currentStatus[4] = status3[4]
             break;
             }            
+            break;
         case "map_6":
             if (input.includes("clown")
             && currentStatus[5] === status1[5]){
@@ -211,6 +215,8 @@ $("#play").click(function(){
             currentStatus[5] = status2[5]
             break;
             }
+            break;
+            
         case "map_7":
             if ((input.includes("kill") || input.includes("stake"))
             && currentStatus[6] === status3[6]
@@ -227,6 +233,7 @@ $("#play").click(function(){
             break;
             }
 
+            break;
         case "map_8":
             if ((input.includes("whistle") )
             && currentStatus[7] === status1[7]
@@ -243,6 +250,7 @@ $("#play").click(function(){
             inventory.push("Vacuum")
             break;
             }
+            break;
         case "map_11":
             if (currentStatus[8] === status1[8]
             && input.includes("paper")){
@@ -282,6 +290,7 @@ $("#play").click(function(){
                 inventory.push("Mirror")
                 break;
             }
+            break;
         case "map_13":
             if ((currentStatus[9] === status1[9] )
             && input.includes("swordfish")
@@ -308,6 +317,7 @@ $("#play").click(function(){
             }
           
 
+            break;
         case "map_16":
             if ((currentStatus[12] === status1[12] )
             && (input.includes("light") || input.includes("fire")  ||  input.includes('torch'))
@@ -333,8 +343,9 @@ $("#play").click(function(){
                 break;
             }
 
+            break;
         case "map_18":
-            if (currentStatus[14] === status1[14] ){
+            if (currentStatus[14] === status1[14] && room === "map_18"){
                 message = "Before you could do that, the vampire rushes you, killing one of your friends. Then goes back to playing."
                 break;
             }
@@ -352,6 +363,7 @@ $("#play").click(function(){
                 inventory.push("Hammer")
                 break;
             }
+            break;
         case "map_19":
            if ((input.includes("vacuum") || input.includes("suck") )
            && currentStatus[15] === status1[15]
