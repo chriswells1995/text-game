@@ -52,7 +52,7 @@ var status1= [
     "A Mummy covered in gaws, a sun shaped amulet",
     "A scary clown toy",
     "A Coffin, a Pillow",
-    "A skeleton, a vaccum cleaner",
+    "A skeleton, a vacuum cleaner",
     'A mirror, Toilet Paper',
     "A locked Safe with a voice activated password",
     "Nothing out of the oridinary",
@@ -76,7 +76,7 @@ var status2= [
     "A sun shaped amulet",
     "Nothing to see here",
     "A Coffin",
-    "A vaccum cleaner",
+    "A vacuum cleaner",
     'Toilet Paper*',
     "An open safe with a gun",
     "Nothing out of the oridinary",
@@ -148,11 +148,11 @@ var placement=-2;
 $("#play").click(function(){
 
     var input = $("#command").val().toLowerCase();
-    console.log(input)
+    // console.log(input)
 
-    console.log("IMPORTANT")
-    console.log(status1[14])
-    var message;
+    // console.log("IMPORTANT")
+    // console.log(status1[14])
+    var message = "You can't do that"
 
     switch (room) {
         case "map_0":
@@ -174,9 +174,11 @@ $("#play").click(function(){
             }
             break;
         case "map_3":
-            if (input.includes("silverware") &&  !inventory.includes("Silverware")){
+            if (input.includes("silverware") &&  currentStatus[3]===status1[3]){
             message = "You picked up the silverware"
+            console.log("adding silverware")
             inventory.push("Silverware")
+            currentStatus[3] = status2[3]
             break;
             }
             else if ((input.includes("fire") || input.includes("light"))
@@ -350,7 +352,7 @@ $("#play").click(function(){
                 break;
             }
             if ((currentStatus[14] === status1[14] )
-            && (input.includes("fire")  || input.includes("torch") )
+            && (input.includes("fire")  || input.includes("torch") || input.includes("light"))
             && input.includes("amulet")
             && inventory.includes("Amulet")){
                 message = "You activated the amulet, shining the bright light, to no effect. Enraged, the vampire kills one of your friends. Perhaps this has a more deceptive use."
@@ -447,20 +449,22 @@ $("#play").click(function(){
 
 
 
-    $("#screen").empty();
-    $("#screen").append(message);
+
 
     renderRoom(room)
 
     console.log(inventory)
+    $("#screen").empty();
+    $("#screen").append(message);
 
+    renderInventory();
 })
 
 $("#up").click(function(){
 
     placement+=4
     $("#screen").empty();
-    $("#screen").append(placement);
+    // $("#screen").append(placement);
     renderMap("up");
 
 
@@ -470,7 +474,7 @@ $("#down").click(function(){
 
     placement-=4
     $("#screen").empty();
-    $("#screen").append(placement);
+    // $("#screen").append(placement);
     renderMap("down");
 
 
@@ -480,7 +484,7 @@ $("#left").click(function(){
 
     placement-=1
     $("#screen").empty();
-    $("#screen").append(placement);
+    // $("#screen").append(placement);
     renderMap("left");
 
 
@@ -490,7 +494,7 @@ $("#right").click(function(){
 
     placement+=1
     $("#screen").empty();
-    $("#screen").append(placement);
+    // $("#screen").append(placement);
     renderMap("right");
 
 
@@ -697,3 +701,15 @@ $("#displayRoom").append(renderRoomName)
 $("#displayRoom").append(briefDescription)
 
 }
+
+function renderInventory(){
+
+    $("#inventorySpace").empty();
+    for (i=0;i<inventory.length; i++){
+        var inventoryItem = $("<li>")
+        .text(inventory[i])
+        $("#inventorySpace").append(inventoryItem)
+    }
+
+}
+renderInventory();
