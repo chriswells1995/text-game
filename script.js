@@ -145,8 +145,8 @@ var placement=-2;
 
 // 
 
-$("#play").click(function(){
-
+$("#play").click(function(event){
+event.preventDefault();
     var input = $("#command").val().toLowerCase();
     // console.log(input)
 
@@ -461,6 +461,7 @@ $("#play").click(function(){
 })
 
 $("#up").click(function(){
+    event.preventDefault();
 
     placement+=4
     $("#screen").empty();
@@ -471,6 +472,7 @@ $("#up").click(function(){
 })
 
 $("#down").click(function(){
+    event.preventDefault();
 
     placement-=4
     $("#screen").empty();
@@ -481,6 +483,7 @@ $("#down").click(function(){
 })
 
 $("#left").click(function(){
+    event.preventDefault();
 
     placement-=1
     $("#screen").empty();
@@ -491,6 +494,7 @@ $("#left").click(function(){
 })
 
 $("#right").click(function(){
+    event.preventDefault();
 
     placement+=1
     $("#screen").empty();
