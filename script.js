@@ -45,11 +45,11 @@ var allRoomNames = [
                     ]    
                     
 var status1= [
-    "Nothing out of the oridinary",
-    "Werewolf, dog whistle",
-    "Doors to the West, North, and East",
-    "Silverware scattered about, a small flame coming from stove",
-    "A Mummy covered in gaws, a sun shaped amulet",
+    "The front door of the SPOOKY HOUSE",
+    "A werewolf sits at the table, eating the remains of something...or someone! Strangley, he seems to be wearing a whislte around his neck.",
+    "Doors to up, left, and right",
+    "This kitchen is a mess. There's silverware scattered about and the stove is on! You can see a small fire from this gas stove.",
+    "A Mummy starts walking toward you! Though he's a little tangled. Old gaws fill the room, covering him and the floor.",
     "A scary clown toy",
     "A Coffin, a Pillow",
     "A skeleton, a vacuum cleaner",
@@ -70,10 +70,10 @@ var currentStatus = status1.map(element => element);
 
 var status2= [
     "Nothing out of the oridinary",
-    "Dead Werewolf, dog whistle",
-    "Doors to the West, North, and East",
-    "A small flame coming from stove",
-    "A sun shaped amulet",
+    "The former werewolf dead on the ground, the whistle still around his neck.",
+    "Doors to up, left, and right",
+    "You can see a small fire from this gas stove.",
+    "You see the gaws burning up, and you notice a small sun-shaped amulet about the size of your fist emiting a bright glowing beam of light",
     "Nothing to see here",
     "A Coffin",
     "A vacuum cleaner",
@@ -98,10 +98,10 @@ var status2= [
 
 var status3= [
     "Nothing out of the oridinary",
-    "Dead Werewolf",
-    "Doors to the West, North, and East",
+    "The former werewold dead on the ground.",
+    "Doors to up, left, and right",
     "A small flame coming from stove",
-    "Dead Mummy",
+    "You see ashy remains of the Mummy",
     "Nothing to see here",
     "A Coffin with a vampire sleeping in it",
     "Dead skeleton",
@@ -121,7 +121,7 @@ var status3= [
 var status4= [
     "Nothing out of the oridinary",
     "Dead Werewolf",
-    "Doors to the West, North, and East",
+    "Doors to up, left, and right",
     "A small flame coming from stove",
     "Dead Mummy",
     "Nothing to see here",
@@ -139,7 +139,7 @@ var status4= [
     "Dog with Squeky toy"
 
 ]
-$("#screen").append("Hello There")
+$("#screen").append("Welcome to the House of Spooky Stuff!")
 
 var placement=-2;
 
@@ -148,10 +148,17 @@ var placement=-2;
 $("#play").click(function(event){
 event.preventDefault();
     var input = $("#command").val().toLowerCase();
+    $("#command").val('')
     // console.log(input)
 
     // console.log("IMPORTANT")
     // console.log(status1[14])
+    if (input==="up" || input==="down" || input === "left"  || input === "right"){
+        movePlayer(input)
+    }
+    else{
+
+    
     var message = "You can't do that"
 
     switch (room) {
@@ -163,7 +170,7 @@ event.preventDefault();
             break;
         case "map_1":
             if (input.includes("shoot") && inventory.includes("Loaded_Gun") && currentStatus[1]===status1[1]){
-            message = "You shot the werewolf!"
+            message = "You shot the werewolf! You watch as his body transforms back into a human, and you recognize him as the local dog trainer who went missing."
             currentStatus[1] = status2[1]
             break;
             }
@@ -203,7 +210,7 @@ event.preventDefault();
             else if (input.includes("amulet") 
             && !inventory.includes("Amulet")
             && currentStatus[4] === status2[4]){
-            message = "You picked up the amulet!"
+            message = "You picked up the amulet! It looks like it stopped glowing once the fires died down"
             inventory.push("Amulet")
             currentStatus[4] = status3[4]
             break;
@@ -231,7 +238,7 @@ event.preventDefault();
             && currentStatus[6] === status1[6]){
             message = "Under the pillow you see a small sheet of paper with the word SWORDFISH"
             currentStatus[6] = status2[6]
-            inventory.push("Password")
+            inventory.push("Password (swordfish)")
             break;
             }
 
@@ -242,7 +249,7 @@ event.preventDefault();
             && inventory.includes("Dog_Whistle")){
             message = "You blew the dog whistle, and the dog came and chewed up the skeleton"
             currentStatus[7] = status2[7]
-            inventory.push("Password")
+            inventory.push("Password (swordfish)")
             break;
             }
             if ((input.includes("vacuum") )
@@ -296,14 +303,14 @@ event.preventDefault();
         case "map_13":
             if ((currentStatus[9] === status1[9] )
             && input.includes("swordfish")
-            && inventory.includes("Password")){
+            && inventory.includes("Password (swordfish)")){
                 message = "You unloced the safe! It looks like there's a gun inside!"
                 currentStatus[9] = status2[9]
                 break;
             }
             if ((currentStatus[9] === status2[9] )
             && input.includes("gun")
-            && inventory.includes("Password")){
+            && inventory.includes("Password (swordfish)")){
                 message = "You picked up the gun! No bullets though."
                 currentStatus[9] = status3[9]
                 inventory.push("Empty_Gun")
@@ -458,6 +465,8 @@ event.preventDefault();
     $("#screen").append(message);
 
     renderInventory();
+
+}
 })
 
 $("#up").click(function(){
@@ -503,6 +512,30 @@ $("#right").click(function(){
 
 
 })
+
+function movePlayer(directionCommand){
+    // event.preventDefault();
+    $("#screen").empty();
+
+    switch (directionCommand) {
+        case "up":
+            placement +=4;
+            break;
+        case "down":
+            placement -=4;
+            break;
+        case "left":
+            placement -=1;
+            break;   
+        case "right":
+            placement +=1;
+            break;                             
+        default:
+            break;
+    }
+
+    renderMap(directionCommand)
+}
 
 function renderMap(direction){
 
