@@ -50,19 +50,19 @@ var status1= [
     "Doors to up, left, and right",
     "This kitchen is a mess. There's silverware scattered about and the stove is on! You can see a small fire from this gas stove.",
     "A Mummy starts walking toward you! Though he's a little tangled. Old gaws fill the room, covering him and the floor.",
-    "A scary clown toy",
-    "A Coffin, a Pillow",
-    "A skeleton, a vacuum cleaner",
-    'A mirror, Toilet Paper',
+    "A scary clown toy sits on a pedestal in the center of the room",
+    "A large Coffin lays open. It is very ominous aside from a fluffy pillow inside.",
+    "A skeleton jumps our from behind a vacuum cleaner! His bones creak and crack with each step as he approaches you.",
+    'You sense this bathroom does not get used much. No soap, no towels, very dusty mirror. At least the toilet paper is full. ',
     "A locked Safe with a voice activated password",
     "Nothing out of the oridinary",
     "Nothing out of the ordinary",
-    "A Blacksmith Kiln, bullet mold, no fire",
+    "You see a large blacksmith setup! The only mold you recognize looks like it would shape a bullet. Too bad there's no fire.",
     "Nothing to see here",
-    "Vampire, Piano with hammers",
-    "Ghost, a hole for amulet",
-    "Spot for mirror",
-    "Dog with stick"
+    "A vampire sits with his back to you, elegently playing a piano. You think he can't see you, but he seems to be chuckling...",
+    "This rundown old attic is full of holes. You feel it get colder and breezier as a ghost appears before you! Though its form seems to distort from the breeze.",
+    "This treehouse seems awfully bare. You wonder if you could hang something on the outside to spruce it up a bit.",
+    "A  dog sits in a doghouse, chewing on a large stick. It doesn't seem to mind you."
 
 ]
 
@@ -76,17 +76,17 @@ var status2= [
     "You see the gaws burning up, and you notice a small sun-shaped amulet about the size of your fist emiting a bright glowing beam of light",
     "Nothing to see here",
     "A Coffin",
-    "A vacuum cleaner",
-    'Toilet Paper*',
+    "What few bones are left lay motionless on the ground in front of the vacuum cleaner.",
+    'A full roll of toilet paper hangs next to a dirty toilet',
     "An open safe with a gun",
     "Nothing out of the oridinary",
     "Nothing out of the ordinary",
-    "A Blacksmith Kiln, bullet mold, on fire",
+    "The blacksmith kiln is lit! With this fire roaring you should try to forge soemthing.",
     "Nothing to see here",
-    "Piano with hammers",
-    "A hole for amulet",
-    "Mirror, not reflecting anything",
-    "Dog with Squeky toy, stick on ground"
+    "With the vampire gone, you can see he left the piano open. It's the classical kind full of small hammers striking the strings.",
+    "The empty attic is breezy and full of holes. The largest is about the size of your fist and you can see the treehouse if you peak through it.",
+    "You can see reflected in the treehouse's mirror a window into the piano room. It looks empty, but you swear you can hear music.",
+    "You see the dog happily chewing on the squeaky toy, and the drool covered stick now on the ground"
 
 ]
 
@@ -104,16 +104,16 @@ var status3= [
     "You see ashy remains of the Mummy",
     "Nothing to see here",
     "A Coffin with a vampire sleeping in it",
-    "Dead skeleton",
-    'Mirror*',
+    "Leftover bones from the skeleton",
+    'You see a very dusty mirror. The vampire must never use it',
     "An open, empty safe",
     "Nothing out of the oridinary",
     "Nothing out of the ordinary",
     "A Blacksmith Kiln, bullet mold, on fire",
     "Nothing to see here",
-    "Piano with hammer removed",
-    "A hole filled with an amulet",
-    "The amulet's light shining on the treehouse",
+    "With only one hammer gone, this piano is still mostly functional.",
+    "The sun shaped amulet fits perfectly in the largest hole! Now how was it activated again?",
+    "A beam of light stemming from the attic is hitting the treehouse.",
     "Dog with Squeky toy"
 
 ]
@@ -127,15 +127,15 @@ var status4= [
     "Nothing to see here",
     "A Coffin with a dead vampire",
     "Dead skeleton",
-    'Empty Bathroom',
+    'The bathroom is empty',
     "An open, empty safe",
     "Nothing out of the oridinary",
     "Nothing out of the ordinary",
     "A Blacksmith Kiln, bullet mold, on fire",
     "Nothing to see here",
-    "Piano with hammer removed",
-    "A hole filled with an amulet shining a light on the treehouse",
-    "Mirror, reflecting the amulet's light",
+    "The Piano with hammer removed",
+    "The glowing amulet's light shines out the hole in the attic, onto the treehouse outside.",
+    "You see the treehouse's mirror, reflecting the amulet's light",
     "Dog with Squeky toy"
 
 ]
@@ -169,7 +169,7 @@ event.preventDefault();
             }
             break;
         case "map_1":
-            if (input.includes("shoot") && inventory.includes("Loaded_Gun") && currentStatus[1]===status1[1]){
+            if (input.includes("shoot") && inventory.indexOf("Loaded_Gun")>-1 && currentStatus[1]===status1[1]){
             message = "You shot the werewolf! You watch as his body transforms back into a human, and you recognize him as the local dog trainer who went missing."
             currentStatus[1] = status2[1]
             break;
@@ -190,7 +190,7 @@ event.preventDefault();
             }
             else if ((input.includes("fire") || input.includes("light"))
             && input.includes("torch")
-            &&  inventory.includes("Unlit_Torch")){
+            &&  inventory.indexOf("Unlit_Torch")>-1){
             message = "You lit your torch!"
             inventory.push("Lit_Torch")
             inventory = inventory.filter(item => item!=="Unlit_Torch")            
@@ -201,14 +201,14 @@ event.preventDefault();
         case "map_5":
             if ((input.includes("torch")  ||  input.includes("fire") || input.includes("light"))
             && input.includes("mummy")
-            && inventory.includes("Lit_Torch")
+            && inventory.indexOf("Lit_Torch")>-1
             && currentStatus[4] === status1[4]){
             message = "You set the mummy on fire!"
             currentStatus[4] = status2[4]
             break;
             }
             else if (input.includes("amulet") 
-            && !inventory.includes("Amulet")
+            && !inventory.indexOf("Amulet")>-1
             && currentStatus[4] === status2[4]){
             message = "You picked up the amulet! It looks like it stopped glowing once the fires died down"
             inventory.push("Amulet")
@@ -229,7 +229,14 @@ event.preventDefault();
         case "map_7":
             if ((input.includes("kill") || input.includes("stake"))
             && currentStatus[6] === status3[6]
-            && inventory.includes("Hammer")){
+            && inventory.indexOf("Hammer")===-1){
+            message = "You killed the vampire! You win!"
+            currentStatus[6] = status4[6]
+            break;
+            }
+            if ((input.includes("kill") || input.includes("stake"))
+            && currentStatus[6] === status3[6]
+            && inventory.indexOf("Hammer")>-1){
             message = "You killed the vampire! You win!"
             currentStatus[6] = status4[6]
             break;
@@ -246,7 +253,7 @@ event.preventDefault();
         case "map_8":
             if ((input.includes("whistle") )
             && currentStatus[7] === status1[7]
-            && inventory.includes("Dog_Whistle")){
+            && inventory.indexOf("Dog_Whistle")>-1){
             message = "You blew the dog whistle, and the dog came and chewed up the skeleton"
             currentStatus[7] = status2[7]
             inventory.push("Password (swordfish)")
@@ -266,7 +273,7 @@ event.preventDefault();
                 currentStatus[8] = status3[8]
                 inventory.push("Toilet_Paper")
                 message = "You picked up toilet paper!"
-                if (inventory.includes("Stick")){
+                if (inventory.indexOf("Stick")>-1){
                     message = "You picked up toilet paper! Your stick fits perfectly inside, creating a torch! You just need something to light it."
                     inventory.push("Unlit_Torch")
                     inventory = inventory.filter(item => item!=="Stick" && item!=="Toilet_Paper" )
@@ -285,7 +292,7 @@ event.preventDefault();
                 message = "You picked up the toilet paper!"
                 currentStatus[8] = status4[8]
                 inventory.push("Toilet_Paper")
-                if (inventory.includes("Stick")){
+                if (inventory.indexOf("Stick")>-1){
                     message = "You picked up toilet paper! Your stick fits perfectly inside, creating a torch! You just need something to light it."
                     inventory.push("Unlit_Torch")
                     inventory = inventory.filter(item => item!=="Stick" && item!=="Toilet_Paper" )
@@ -303,19 +310,19 @@ event.preventDefault();
         case "map_13":
             if ((currentStatus[9] === status1[9] )
             && input.includes("swordfish")
-            && inventory.includes("Password (swordfish)")){
+            && inventory.indexOf("Password (swordfish)")>-1){
                 message = "You unloced the safe! It looks like there's a gun inside!"
                 currentStatus[9] = status2[9]
                 break;
             }
             if ((currentStatus[9] === status2[9] )
             && input.includes("gun")
-            && inventory.includes("Password (swordfish)")){
+            && inventory.indexOf("Password (swordfish)")>-1){
                 message = "You picked up the gun! No bullets though."
                 currentStatus[9] = status3[9]
                 inventory.push("Empty_Gun")
 
-                if (inventory.includes("Silver_Bullet")){
+                if (inventory.indexOf("Silver_Bullet")>-1){
                      message = "You picked up the gun! And your silver bullet fits right in!"
                       inventory.push("Loaded_Gun")
                       inventory = inventory.filter(item => item!=="Empty_Gun" && item!=="Silver_Bullet" )
@@ -331,19 +338,19 @@ event.preventDefault();
             if ((currentStatus[12] === status1[12] )
             && (input.includes("light") || input.includes("fire")  ||  input.includes('torch'))
             && !input.includes("mummy")
-            && inventory.includes("Lit_Torch")){
+            && inventory.indexOf("Lit_Torch")>-1){
                 message = "You lit the Blacksmith Kiln! Now you can forge something!"
                 currentStatus[12] = status2[12]
                 break;
             }
             if ((currentStatus[12] === status2[12] )
             && (input.includes("silverware") )
-            && inventory.includes("Silverware")){
+            && inventory.indexOf("Silverware")>-1){
                 message = "You forged a silver bullet out of the Silverware!"
                 inventory.push("Silver_Bullet")
                 inventory = inventory.filter(item => item!=="Silverware")
 
-                if (inventory.includes("Empty_Gun")){
+                if (inventory.indexOf("Empty_Gun")>-1){
                     message = "You forged a silver bullet! If fits right into your gun!"
                     inventory.push("Loaded_Gun")
                     inventory = inventory.filter(item => item!=="Empty_Gun" && item!=="Silver_Bullet" )
@@ -361,7 +368,7 @@ event.preventDefault();
             if ((currentStatus[14] === status1[14] )
             && (input.includes("fire")  || input.includes("torch") || input.includes("light"))
             && input.includes("amulet")
-            && inventory.includes("Amulet")){
+            && inventory.indexOf("Amulet")>-1){
                 message = "You activated the amulet, shining the bright light, to no effect. Enraged, the vampire kills one of your friends. Perhaps this has a more deceptive use."
                 break;
             }
@@ -376,21 +383,21 @@ event.preventDefault();
         case "map_19":
            if ((input.includes("vacuum") || input.includes("suck") )
            && currentStatus[15] === status1[15]
-           && inventory.includes("Vacuum")){
+           && inventory.indexOf("Vacuum")>-1){
                 message = "You sucked up the ghost!"
                 currentStatus[15] = status2[15]
             break;
             }
             if ((input.includes("amulet") )
             && currentStatus[15] === status2[15]
-            && inventory.includes("Amulet")){
+            && inventory.indexOf("Amulet")>-1){
                  message = "You put the amulet in the hole!"
                  currentStatus[15] = status3[15];
              break;
              }
              if ((input.includes("fire") || input.includes("torch") )
              && currentStatus[15] === status3[15]
-             && inventory.includes("Amulet")){
+             && inventory.indexOf("Amulet")>-1){
                   message = "You light the amulet on fire. Your torch goes out, (it's more pointy than you remember) but it causes the amulet it to shine a light onto the treehouse!"
                   inventory.push("Stake")
                   inventory = inventory.filter(item => item!=="Lit_Torch")
@@ -412,7 +419,7 @@ event.preventDefault();
         case "map_21":
             if ((currentStatus[16] === status1[16] || currentStatus[16] === status3[16] )
             && (input.includes("mirror")  )
-            && inventory.includes("Mirror")){
+            && inventory.indexOf("Mirror")>-1){
                 message = "You place the mirror on the treehouse"
                     if (currentStatus[15] === status4[15] && currentStatus[16]===status3[16]  ){
                         message = "You place the mirror on the treehouse, reflecting the light from the amulet into the piano room. You overhear the vampire say, SUNRISE ALREADY? I BETTER GET TO BED!"
@@ -428,7 +435,7 @@ event.preventDefault();
         case "map_25":
             if ((currentStatus[17] === status1[17] )
             && (input.includes("clown") )
-            && inventory.includes("Clown_Toy")){
+            && inventory.indexOf("Clown_Toy")>-1){
                 message = "You gave the dog the squeaky toy, and he dropped his stick!"
                 currentStatus[17] = status2[17]
                 inventory = inventory.filter(item => item!=="Clown_Toy")                
@@ -440,7 +447,7 @@ event.preventDefault();
                 currentStatus[17] = status3[17]
                 inventory.push("Stick")
 
-                if (inventory.includes("Toilet_Paper")){
+                if (inventory.indexOf("Toilet_Paper")>-1){
                     message = "You picked up the stick! It fits perfectly in the roll of TP, creating a torch! It just needs something to light it."
                     inventory.push("Unlit_Torch")
                     inventory = inventory.filter(item => item!=="Stick" && item!=="Toilet_Paper")
