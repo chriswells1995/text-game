@@ -23,7 +23,11 @@ var allMaps = ["map_0",
                 "map_25"                                 
                 ]
 
-var allRoomNames = [
+
+
+
+
+                var allRoomNames = [
                     "Front Door",
                     "Dining Room",
                     "Entry Way",
@@ -43,7 +47,32 @@ var allRoomNames = [
                     "Treehouse",
                     "Backyard"
                     ]    
-                    
+                    // TODO: it may or may not be more efficient to have status img arrays, storing the names of all the drawings.
+var allPOVs1= [ 
+            "base_room",
+            "dining_room_a",
+            "Emtryway",
+            "kitchen_a",
+            "temp",
+            "hall1_a",
+            "bedroom_ab",
+            "temp",
+            "bathroom_a",
+            "safe_room_a",
+            "hall2",
+            "stairs",
+            "temp",
+            "side_yard_a",
+            "piano_room_4a",
+            "temp",
+            "tomb",
+            "temp"
+
+]
+
+var currentPOV = allPOVs1.map(element => element);
+
+
 var status1= [
     "The front door of the SPOOKY HOUSE",
     "A werewolf sits at the table, eating the remains of something...or someone! Strangley, he seems to be wearing a whislte around his neck.",
@@ -62,9 +91,10 @@ var status1= [
     "A vampire sits with his back to you, elegently playing a piano. You think he can't see you, but he seems to be chuckling...",
     "This rundown old attic is full of holes. You feel it get colder and breezier as a ghost appears before you! Though its form seems to distort from the breeze.",
     "This treehouse seems awfully bare. You wonder if you could hang something on the outside to spruce it up a bit.",
-    "A  dog sits in a doghouse, chewing on a large stick. It doesn't seem to mind you."
+    "A dog sits in a doghouse, chewing on a large stick. It doesn't seem to mind you."
 
 ]
+
 
 var currentStatus = status1.map(element => element);
 
@@ -160,6 +190,7 @@ event.preventDefault();
 
     
     var message = "You can't do that"
+    var roomPOV = "base_room"
 
     switch (room) {
         case "map_0":
@@ -414,7 +445,7 @@ event.preventDefault();
                     }
               break;
               }
-
+              break;
 
         case "map_21":
             if ((currentStatus[16] === status1[16] || currentStatus[16] === status3[16] )
@@ -476,49 +507,49 @@ event.preventDefault();
 }
 })
 
-$("#up").click(function(){
-    event.preventDefault();
+// $("#up").click(function(){
+//     event.preventDefault();
 
-    placement+=4
-    $("#screen").empty();
-    // $("#screen").append(placement);
-    renderMap("up");
-
-
-})
-
-$("#down").click(function(){
-    event.preventDefault();
-
-    placement-=4
-    $("#screen").empty();
-    // $("#screen").append(placement);
-    renderMap("down");
+//     placement+=4
+//     $("#screen").empty();
+//     // $("#screen").append(placement);
+//     renderMap("up");
 
 
-})
+// })
 
-$("#left").click(function(){
-    event.preventDefault();
+// $("#down").click(function(){
+//     event.preventDefault();
 
-    placement-=1
-    $("#screen").empty();
-    // $("#screen").append(placement);
-    renderMap("left");
-
-
-})
-
-$("#right").click(function(){
-    event.preventDefault();
-
-    placement+=1
-    $("#screen").empty();
-    // $("#screen").append(placement);
-    renderMap("right");
+//     placement-=4
+//     $("#screen").empty();
+//     // $("#screen").append(placement);
+//     renderMap("down");
 
 
-})
+// })
+
+// $("#left").click(function(){
+//     event.preventDefault();
+
+//     placement-=1
+//     $("#screen").empty();
+//     // $("#screen").append(placement);
+//     renderMap("left");
+
+
+// })
+
+// $("#right").click(function(){
+//     event.preventDefault();
+
+//     placement+=1
+//     $("#screen").empty();
+//     // $("#screen").append(placement);
+//     renderMap("right");
+
+
+// })
 
 function movePlayer(directionCommand){
     // event.preventDefault();
@@ -715,11 +746,15 @@ function renderMap(direction){
     var map = $("<img>")
     .attr("width", "10%")
     .attr("height", "10%")
-    .attr("src", "drawings/map_0.png")
+    // .attr("src", "drawings/map_0.png")
     .attr("src", "drawings/"+room +".png")
 
     $("#mapScreen").empty();
     $("#mapScreen").append(map);
+
+
+
+
 
     renderRoom(room)
 
@@ -743,6 +778,17 @@ var briefDescription = $("<p>")
 $("#displayRoom").empty()
 $("#displayRoom").append(renderRoomName)
 $("#displayRoom").append(briefDescription)
+
+var roomPOV = currentPOV[indexNumber]
+
+var POV = $("<img>")
+.attr("src", "rooms1/"+roomPOV+".png")
+// .attr("src", "rooms1/base_room.png")
+.attr("width", "20%")
+.attr("height", "20%");
+
+$("#pov").empty();
+$("#pov").append(POV);
 
 }
 

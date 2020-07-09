@@ -4,12 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous"> -->
 </head>
 <body>
     <div id = "test" style="text-align: center;">
         <h1>House of Spooky Stuff</h1>
-        <div id ="mapScreen">      
+
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8"></div>
+                <div id="pov">
+                    <h1>Room POV</h1>
+                </div>
+                        <div class = "col-md-4" id ="mapScreen">      
         </div>
+            </div>
+        </div>
+
+
         <!-- <form type="submit">
                     <input type="text" id = "command">
 
@@ -33,6 +45,7 @@
     <h1 id = "screen"></h1>
 
     <div id = "displayRoom" ></div>
+
     <h2>Inventory:</h2>
     <ul id = "inventorySpace"> </ul>
         <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
