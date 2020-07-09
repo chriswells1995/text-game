@@ -48,7 +48,7 @@ var allMaps = ["map_0",
                     "Backyard"
                     ]    
                     // TODO: it may or may not be more efficient to have status img arrays, storing the names of all the drawings.
-var allPOVs1= [ 
+var POVstatus1= [ 
             "base_room",
             "dining_room_a",
             "Emtryway",
@@ -62,7 +62,7 @@ var allPOVs1= [
             "hall2",
             "stairs",
             "temp",
-            "side_yard_a",
+            "side_yard2_a",
             "piano_room_4a",
             "temp",
             "tomb",
@@ -70,7 +70,7 @@ var allPOVs1= [
 
 ]
 
-var currentPOV = allPOVs1.map(element => element);
+var currentPOV = POVstatus1.map(element => element);
 
 
 var status1= [
@@ -120,8 +120,27 @@ var status2= [
 
 ]
 
+var POVstatus2= [ 
+    "base_room",
+    "dining_room_b",
+    "Emtryway",
+    "kitchen_b",
+    "temp",
+    "hall1_b",
+    "bedroom_ab",
+    "temp",
+    "bathroom_c",
+    "safe_room_b",
+    "hall2",
+    "stairs",
+    "temp",
+    "side_yard2_b",
+    "piano_room_4c",
+    "temp",
+    "tomb_b",
+    "temp"
 
-
+]
 
 
 
@@ -148,6 +167,28 @@ var status3= [
 
 ]
 
+var POVstatus3= [ 
+    "base_room",
+    "dining_room_c",
+    "Emtryway",
+    "kitchen_b",
+    "temp",
+    "hall1_b",
+    "bedroom_b",
+    "temp",
+    "bathroom_b",
+    "safe_room_c",
+    "hall2",
+    "stairs",
+    "temp",
+    "side_yard2_d",
+    "piano_room_4d",
+    "temp",
+    "tomb_d",
+    "temp"
+
+]
+
 var status4= [
     "Nothing out of the oridinary",
     "Dead Werewolf",
@@ -163,12 +204,36 @@ var status4= [
     "Nothing out of the ordinary",
     "A Blacksmith Kiln, bullet mold, on fire",
     "Nothing to see here",
-    "The Piano with hammer removed",
+    "Out the window you can see the tomb and the mirror reflecting the piano...and only the piano!",
     "The glowing amulet's light shines out the hole in the attic, onto the treehouse outside.",
     "You see the treehouse's mirror, reflecting the amulet's light",
     "Dog with Squeky toy"
 
 ]
+
+var POVstatus4= [ 
+    "base_room",
+    "dining_room_c",
+    "Emtryway",
+    "kitchen_b",
+    "temp",
+    "hall1_b",
+    "bedroom_c",
+    "temp",
+    "bathroom_d",
+    "safe_room_c",
+    "hall2",
+    "stairs",
+    "temp",
+    "side_yard_c",
+    "piano_room_4b",
+    "temp",
+    "tomb_c3",
+    "temp"
+
+]
+
+
 $("#screen").append("Welcome to the House of Spooky Stuff!")
 
 var placement=-2;
