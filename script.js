@@ -53,7 +53,7 @@ var POVstatus1= [
             "dining_room_a",
             "Emtryway",
             "kitchen_a",
-            "temp",
+            "mummy_room_2a",
             "hall1_a",
             "bedroom_ab",
             "temp",
@@ -111,7 +111,7 @@ var status2= [
     "An open safe with a gun",
     "Nothing out of the oridinary",
     "Nothing out of the ordinary",
-    "The blacksmith kiln is lit! With this fire roaring you should try to forge soemthing.",
+    "The blacksmith forge is lit! With this fire roaring you should try to forge soemthing.",
     "Nothing to see here",
     "With the vampire gone, you can see he left the piano open. It's the classical kind full of small hammers striking the strings.",
     "The empty attic is breezy and full of holes. The largest is about the size of your fist and you can see the treehouse if you peak through it.",
@@ -125,7 +125,7 @@ var POVstatus2= [
     "dining_room_b",
     "Emtryway",
     "kitchen_b",
-    "temp",
+    "mummy_room_2b",
     "hall1_b",
     "bedroom_ab",
     "temp",
@@ -158,7 +158,7 @@ var status3= [
     "An open, empty safe",
     "Nothing out of the oridinary",
     "Nothing out of the ordinary",
-    "A Blacksmith Kiln, bullet mold, on fire",
+    "A Blacksmith forge, bullet mold, on fire",
     "Nothing to see here",
     "With only one hammer gone, this piano is still mostly functional.",
     "The sun shaped amulet fits perfectly in the largest hole! Now how was it activated again?",
@@ -172,7 +172,7 @@ var POVstatus3= [
     "dining_room_c",
     "Emtryway",
     "kitchen_b",
-    "temp",
+    "mummy_room_2c",
     "hall1_b",
     "bedroom_b",
     "temp",
@@ -202,7 +202,7 @@ var status4= [
     "An open, empty safe",
     "Nothing out of the oridinary",
     "Nothing out of the ordinary",
-    "A Blacksmith Kiln, bullet mold, on fire",
+    "A Blacksmith forge, bullet mold, on fire",
     "Nothing to see here",
     "Out the window you can see the tomb and the mirror reflecting the piano...and only the piano!",
     "The glowing amulet's light shines out the hole in the attic, onto the treehouse outside.",
@@ -435,7 +435,7 @@ event.preventDefault();
             && (input.includes("light") || input.includes("fire")  ||  input.includes('torch'))
             && !input.includes("mummy")
             && inventory.indexOf("Lit_Torch")>-1){
-                message = "You lit the Blacksmith Kiln! Now you can forge something!"
+                message = "You lit the Blacksmith Forge! Now you can forge something!"
                 currentStatus[12] = status2[12]
                 break;
             }
