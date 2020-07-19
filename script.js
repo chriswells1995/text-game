@@ -911,7 +911,7 @@ var briefDescription = $("<p>")
 $("#displayRoom").empty()
 $("#displayRoom").append(renderRoomName)
 $("#displayRoom").append(briefDescription)
-$("#displayRoom").append(deadFriends)
+
 
 var roomPOV = currentPOV[indexNumber]
 
