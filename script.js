@@ -47,26 +47,25 @@ var allMaps = ["map_0",
                     "Treehouse",
                     "Backyard"
                     ]    
-                    // TODO: it may or may not be more efficient to have status img arrays, storing the names of all the drawings.
 var POVstatus1= [ 
-            "base_room",
+            "front_door",
             "dining_room_a",
             "Emtryway",
             "kitchen_a",
             "mummy_room_2a",
             "hall1_a",
             "bedroom_ab",
-            "temp",
+            "closet_a",
             "bathroom_a",
             "safe_room_a",
             "hall2",
             "stairs",
-            "temp",
+            "basement_a",
             "side_yard2_a",
             "piano_room_4a",
-            "temp",
+            "attic_a",
             "tomb",
-            "temp"
+            "backyard_a"
 
 ]
 
@@ -121,24 +120,24 @@ var status2= [
 ]
 
 var POVstatus2= [ 
-    "base_room",
+    "front_door",
     "dining_room_b",
     "Emtryway",
     "kitchen_b",
     "mummy_room_2b",
     "hall1_b",
     "bedroom_ab",
-    "temp",
+    "closet_b",
     "bathroom_c",
     "safe_room_b",
     "hall2",
     "stairs",
-    "temp",
+    "basement_b",
     "side_yard2_b",
     "piano_room_4c",
-    "temp",
+    "attic_b",
     "tomb_b",
-    "temp"
+    "backyard_b"
 
 ]
 
@@ -175,17 +174,17 @@ var POVstatus3= [
     "mummy_room_2c",
     "hall1_b",
     "bedroom_b",
-    "temp",
+    "closet_c",
     "bathroom_b",
     "safe_room_c",
     "hall2",
     "stairs",
-    "temp",
+    "basement_b",
     "side_yard2_d",
     "piano_room_4d",
-    "temp",
+    "attic_c",
     "tomb_d",
-    "temp"
+    "backyard_c"
 
 ]
 
@@ -216,20 +215,20 @@ var POVstatus4= [
     "dining_room_c",
     "Emtryway",
     "kitchen_b",
-    "temp",
+    "mummy_room_2c",
     "hall1_b",
     "bedroom_c",
-    "temp",
+    "closet_c",
     "bathroom_d",
     "safe_room_c",
     "hall2",
     "stairs",
-    "temp",
+    "basement_b",
     "side_yard_c",
     "piano_room_4b",
-    "temp",
+    "attic_d",
     "tomb_c3",
-    "temp"
+    "backyard_c"
 
 ]
 
