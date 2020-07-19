@@ -3,6 +3,7 @@
 // test.append("Hello")
 var room = "map_0"
 var inventory = [];
+var deadFriends = 0;
 var allMaps = ["map_0",
                 "map_1",
                 "map_2",
@@ -44,7 +45,7 @@ var allMaps = ["map_0",
                     "Side Yard",
                     "Piano Room",
                     "Attic",
-                    "Treehouse",
+                    "Mausoleam",
                     "Backyard"
                     ]    
 var POVstatus1= [ 
@@ -87,9 +88,9 @@ var status1= [
     "Nothing out of the ordinary",
     "You see a large blacksmith setup! The only mold you recognize looks like it would shape a bullet. Too bad there's no fire.",
     "Nothing to see here",
-    "A vampire sits with his back to you, elegently playing a piano. You think he can't see you, but he seems to be chuckling...",
-    "This rundown old attic is full of holes. You feel it get colder and breezier as a ghost appears before you! Though its form seems to distort from the breeze.",
-    "This treehouse seems awfully bare. You wonder if you could hang something on the outside to spruce it up a bit.",
+    "A vampire sits with his eyes closed, elegently playing a piano. You think he can't see you, but he seems to be chuckling...",
+    "This rundown old attic has a giant hole in the side! You feel it get colder and breezier as a ghost appears before you!",
+    "This mausoleam is missing a pillar. You wonder if you could put something with a simmilar design here to make it more symmetrical.",
     "A dog sits in a doghouse, chewing on a large stick. It doesn't seem to mind you."
 
 ]
@@ -113,8 +114,8 @@ var status2= [
     "The blacksmith forge is lit! With this fire roaring you should try to forge soemthing.",
     "Nothing to see here",
     "With the vampire gone, you can see he left the piano open. It's the classical kind full of small hammers striking the strings.",
-    "The empty attic is breezy and full of holes. The largest is about the size of your fist and you can see the treehouse if you peak through it.",
-    "You can see reflected in the treehouse's mirror a window into the piano room. It looks empty, but you swear you can hear music.",
+    "The empty attic has a giant hole in the side! And with the ghost gone, you now see a staff, perminatley planted in the ground, with a strange circle on top. It looks like something could fit in it.",
+    "You can see reflected in the mausoleam's mirror a window into the piano room. It looks empty, but you swear you can hear music.",
     "You see the dog happily chewing on the squeaky toy, and the drool covered stick now on the ground"
 
 ]
@@ -126,7 +127,7 @@ var POVstatus2= [
     "kitchen_b",
     "mummy_room_2b",
     "hall1_b",
-    "bedroom_ab",
+    "bedroom_a",
     "closet_b",
     "bathroom_c",
     "safe_room_b",
@@ -160,8 +161,8 @@ var status3= [
     "A Blacksmith forge, bullet mold, on fire",
     "Nothing to see here",
     "With only one hammer gone, this piano is still mostly functional.",
-    "The sun shaped amulet fits perfectly in the largest hole! Now how was it activated again?",
-    "A beam of light stemming from the attic is hitting the treehouse.",
+    "The sun shaped amulet fits perfectly in the staff! Now how was it activated again?",
+    "A beam of light stemming from the attic is hitting the mausoleam.",
     "Dog with Squeky toy"
 
 ]
@@ -204,8 +205,8 @@ var status4= [
     "A Blacksmith forge, bullet mold, on fire",
     "Nothing to see here",
     "Out the window you can see the tomb and the mirror reflecting the piano...and only the piano!",
-    "The glowing amulet's light shines out the hole in the attic, onto the treehouse outside.",
-    "You see the treehouse's mirror, reflecting the amulet's light",
+    "The glowing amulet's light shines out the hole in the attic, onto the mausoleam outside.",
+    "You see the mausoleam's mirror, reflecting the amulet's light",
     "Dog with Squeky toy"
 
 ]
@@ -256,6 +257,7 @@ event.preventDefault();
     var message = "You can't do that"
     var roomPOV = "base_room"
 
+
     switch (room) {
         case "map_0":
             if (input.includes("open")){
@@ -264,27 +266,36 @@ event.preventDefault();
             }
             break;
         case "map_1":
-            if (input.includes("shoot") && inventory.indexOf("Loaded_Gun")>-1 && currentStatus[1]===status1[1]){
-            message = "You shot the werewolf! You watch as his body transforms back into a human, and you recognize him as the local dog trainer who went missing."
-            currentStatus[1] = status2[1]
+            if ( (input.includes("shoot") || input.includes("gun") || input.includes("bullet") || input.includes("kill")) 
+            && inventory.indexOf("Loaded_Gun")>-1 
+            && currentStatus[1]===status1[1]){
+            message = "You shot the werewolf! You watch as his body transforms back into a human, and you recognize him as the local dog trainer who went missing.";
+            currentStatus[1] = status2[1];
+            currentPOV[1] = POVstatus2[1];
             break;
             }
+            else if(currentStatus[1] === status1[1] && inventory.indexOf("Loaded_Gun")===-1){
+                message = "Before you could do that, the werewolf rushes you, killing one of your friends, then goes back to its meal.";
+                deadFriends++;
+            }
             else if (input.includes("whistle") && currentStatus[1]===status2[1]){
-                message = "You picked up the dog whistle!"
-                inventory.push("Dog_Whistle")
+                currentStatus[1] = status3[1];
+                currentPOV[1] = POVstatus3[1];                
+                message = "You picked up the dog whistle!";
+                inventory.push("Dog_Whistle");
                 break;
             }
             break;
         case "map_3":
             if (input.includes("silverware") &&  currentStatus[3]===status1[3]){
-            message = "You picked up the silverware"
-            console.log("adding silverware")
-            inventory.push("Silverware")
-            currentStatus[3] = status2[3]
+            message = "You picked up the silverware";
+            console.log("adding silverware");
+            inventory.push("Silverware");
+            currentStatus[3] = status2[3];
+            currentPOV[3] = POVstatus2[3];    
             break;
             }
-            else if ((input.includes("fire") || input.includes("light"))
-            && input.includes("torch")
+            else if ((input.includes("fire") || input.includes("light") || input.includes("torch"))
             &&  inventory.indexOf("Unlit_Torch")>-1){
             message = "You lit your torch!"
             inventory.push("Lit_Torch")
@@ -295,28 +306,35 @@ event.preventDefault();
             break;
         case "map_5":
             if ((input.includes("torch")  ||  input.includes("fire") || input.includes("light"))
-            && input.includes("mummy")
             && inventory.indexOf("Lit_Torch")>-1
             && currentStatus[4] === status1[4]){
-            message = "You set the mummy on fire!"
-            currentStatus[4] = status2[4]
+            message = "You set the mummy on fire!";
+            currentStatus[4] = status2[4];
+            currentPOV[4] = POVstatus2[4];
             break;
             }
+            else if (currentStatus[4] === status1[4]){
+                message = "Before you could do that, the mummy attacks and kills one of your friends!";
+                deadFriends++;
+                break;
+            }
             else if (input.includes("amulet") 
-            && !inventory.indexOf("Amulet")>-1
+            && inventory.indexOf("Amulet")===-1
             && currentStatus[4] === status2[4]){
             message = "You picked up the amulet! It looks like it stopped glowing once the fires died down"
             inventory.push("Amulet")
             currentStatus[4] = status3[4]
+            currentPOV[4] = POVstatus3[4];
             break;
             }            
             break;
         case "map_6":
             if (input.includes("clown")
             && currentStatus[5] === status1[5]){
-            message = "You picked up the clown toy! (It squeaks!)"
-            inventory.push("Clown_Toy")
-            currentStatus[5] = status2[5]
+            message = "You picked up the clown toy! And you notice it squeaks when you sequeeze it";
+            inventory.push("Clown_Toy");
+            currentStatus[5] = status2[5];
+            currentPOV[5] = POVstatus2[5];
             break;
             }
             break;
@@ -325,22 +343,23 @@ event.preventDefault();
             if ((input.includes("kill") || input.includes("stake"))
             && currentStatus[6] === status3[6]
             && inventory.indexOf("Hammer")===-1){
-            message = "You killed the vampire! You win!"
-            currentStatus[6] = status4[6]
+            message = "You need something to pound the stake with!";
             break;
             }
             if ((input.includes("kill") || input.includes("stake"))
             && currentStatus[6] === status3[6]
             && inventory.indexOf("Hammer")>-1){
-            message = "You killed the vampire! You win!"
-            currentStatus[6] = status4[6]
+            message = "You killed the vampire! You win! Total friends lost: "+ deadFriends;
+            currentStatus[6] = status4[6];
+            currentPOV[6] = POVstatus4[6];
             break;
             }
             if ((input.includes("pillow") )
             && currentStatus[6] === status1[6]){
-            message = "Under the pillow you see a small sheet of paper with the word SWORDFISH"
-            currentStatus[6] = status2[6]
-            inventory.push("Password (swordfish)")
+            message = "Under the pillow you see a small sheet of paper with the word SWORDFISH";
+            currentStatus[6] = status2[6];
+            currentPOV[6] = POVstatus2[6];
+            inventory.push("Password (swordfish)");
             break;
             }
 
@@ -349,78 +368,90 @@ event.preventDefault();
             if ((input.includes("whistle") )
             && currentStatus[7] === status1[7]
             && inventory.indexOf("Dog_Whistle")>-1){
-            message = "You blew the dog whistle, and the dog came and chewed up the skeleton"
-            currentStatus[7] = status2[7]
-            inventory.push("Password (swordfish)")
+            message = "You blew the dog whistle, and the dog came and chewed up the skeleton";
+            currentStatus[7] = status2[7];
+            currentPOV[7] = POVstatus2[7];
             break;
             }
-            if ((input.includes("vacuum") )
+            else if (currentStatus[7] === status1[7]){
+                message = "Before you can do that, the skeleton rushes you, killing one of your friends.";
+                deadFriends++;
+            break;
+            }
+            else if ((input.includes("vacuum") )
             && currentStatus[7] === status2[7]){
-            message = "You picked up the vacuum cleaner"
-            currentStatus[7] = status3[7]
-            inventory.push("Vacuum")
+            message = "You picked up the vacuum cleaner";
+            currentStatus[7] = status3[7];
+            currentPOV[7] = POVstatus3[7];
+            inventory.push("Vacuum");
             break;
             }
             break;
         case "map_11":
             if (currentStatus[8] === status1[8]
             && input.includes("paper")){
-                currentStatus[8] = status3[8]
-                inventory.push("Toilet_Paper")
-                message = "You picked up toilet paper!"
+                currentStatus[8] = status3[8];
+                currentPOV[8] = POVstatus3[8];
+                inventory.push("Toilet_Paper");
+                message = "You picked up toilet paper!";
                 if (inventory.indexOf("Stick")>-1){
                     message = "You picked up toilet paper! Your stick fits perfectly inside, creating a torch! You just need something to light it."
                     inventory.push("Unlit_Torch")
                     inventory = inventory.filter(item => item!=="Stick" && item!=="Toilet_Paper" )
                 }
-                break
+                break;
             }
             if (currentStatus[8] === status1[8]
                 && input.includes("mirror")){
-                    currentStatus[8] = status2[8]
-                    inventory.push("Mirror")
-                    message = "You picked up a mirror!"
-                    break
+                    currentStatus[8] = status2[8];
+                    currentPOV[8] = POVstatus2[8];
+                    inventory.push("Mirror");
+                    message = "You picked up a mirror!";
+                    break;
                 }
             if ((currentStatus[8] === status2[8] )
             && input.includes("paper")){
-                message = "You picked up the toilet paper!"
-                currentStatus[8] = status4[8]
-                inventory.push("Toilet_Paper")
+                message = "You picked up the toilet paper!";
+                currentStatus[8] = status4[8];
+                currentPOV[8] = POVstatus4[8];
+                inventory.push("Toilet_Paper");
                 if (inventory.indexOf("Stick")>-1){
-                    message = "You picked up toilet paper! Your stick fits perfectly inside, creating a torch! You just need something to light it."
-                    inventory.push("Unlit_Torch")
-                    inventory = inventory.filter(item => item!=="Stick" && item!=="Toilet_Paper" )
+                    message = "You picked up toilet paper! Your stick fits perfectly inside, creating a torch! You just need something to light it.";
+                    inventory.push("Unlit_Torch");
+                    inventory = inventory.filter(item => item!=="Stick" && item!=="Toilet_Paper" );
                 }
                 break;
             }    
             if ((currentStatus[8] === status3[8] )
             && input.includes("mirror")){
-                message = "You picked up the Mirror!"
-                currentStatus[8] = status4[8]
-                inventory.push("Mirror")
+                message = "You picked up the Mirror!";
+                currentStatus[8] = status4[8];
+                currentPOV[8] = POVstatus4[8];
+                inventory.push("Mirror");
                 break;
             }
             break;
         case "map_13":
             if ((currentStatus[9] === status1[9] )
-            && input.includes("swordfish")
+            && (input.includes("swordfish") || input.includes("password"))
             && inventory.indexOf("Password (swordfish)")>-1){
-                message = "You unloced the safe! It looks like there's a gun inside!"
-                currentStatus[9] = status2[9]
+                message = "You unloced the safe! It looks like there's a gun inside!";
+                currentStatus[9] = status2[9];
+                currentPOV[9] = POVstatus2[9];
                 break;
             }
-            if ((currentStatus[9] === status2[9] )
+            if ((currentStatus[9] === status2[9])
             && input.includes("gun")
             && inventory.indexOf("Password (swordfish)")>-1){
-                message = "You picked up the gun! No bullets though."
-                currentStatus[9] = status3[9]
-                inventory.push("Empty_Gun")
+                message = "You picked up the gun! No bullets though.";
+                currentStatus[9] = status3[9];
+                currentPOV[9] = POVstatus3[9];
+                inventory.push("Empty_Gun");
 
                 if (inventory.indexOf("Silver_Bullet")>-1){
-                     message = "You picked up the gun! And your silver bullet fits right in!"
-                      inventory.push("Loaded_Gun")
-                      inventory = inventory.filter(item => item!=="Empty_Gun" && item!=="Silver_Bullet" )
+                      message = "You picked up the gun! And your silver bullet fits right in!";
+                      inventory.push("Loaded_Gun");
+                      inventory = inventory.filter(item => item!=="Empty_Gun" && item!=="Silver_Bullet");
 
                  }     
 
@@ -430,16 +461,17 @@ event.preventDefault();
 
             break;
         case "map_16":
-            if ((currentStatus[12] === status1[12] )
+            if ((currentStatus[12] === status1[12])
             && (input.includes("light") || input.includes("fire")  ||  input.includes('torch'))
             && !input.includes("mummy")
             && inventory.indexOf("Lit_Torch")>-1){
-                message = "You lit the Blacksmith Forge! Now you can forge something!"
-                currentStatus[12] = status2[12]
+                message = "You lit the Blacksmith Forge! Now you can forge something!";
+                currentStatus[12] = status2[12];
+                currentPOV[12] = POVstatus2[12];
                 break;
             }
             if ((currentStatus[12] === status2[12] )
-            && (input.includes("silverware") )
+            && (input.includes("silver") )
             && inventory.indexOf("Silverware")>-1){
                 message = "You forged a silver bullet out of the Silverware!"
                 inventory.push("Silver_Bullet")
@@ -457,21 +489,24 @@ event.preventDefault();
             break;
         case "map_18":
             if (currentStatus[14] === status1[14] && room === "map_18"){
-                message = "Before you could do that, the vampire rushes you, killing one of your friends. Then goes back to playing."
+                message = "Before you could do that, the vampire rushes you, killing one of your friends. Then goes back to playing.";
+                deadFriends++;
                 break;
             }
             if ((currentStatus[14] === status1[14] )
             && (input.includes("fire")  || input.includes("torch") || input.includes("light"))
             && input.includes("amulet")
             && inventory.indexOf("Amulet")>-1){
-                message = "You activated the amulet, shining the bright light, to no effect. Enraged, the vampire kills one of your friends. Perhaps this has a more deceptive use."
+                message = "You activated the amulet, shining the bright light, to no effect. Enraged, the vampire kills one of your friends. Perhaps you can be more sneaky about this.";
+                deadFriends++;
                 break;
             }
             if ((currentStatus[14] === status2[14] )
             && input.includes("hammer")){
-                message = "You took one of the hammers from the piano!"
-                currentStatus[14] = status3[14]
-                inventory.push("Hammer")
+                message = "You took one of the hammers from the piano!";
+                currentStatus[14] = status3[14];
+                currentPOV[14] = POVstatus3[14];
+                inventory.push("Hammer");
                 break;
             }
             break;
@@ -481,6 +516,12 @@ event.preventDefault();
            && inventory.indexOf("Vacuum")>-1){
                 message = "You sucked up the ghost!"
                 currentStatus[15] = status2[15]
+                currentPOV[15] = POVstatus2[15];
+            break;
+                }
+                else if(currentStatus[15]===status1[15]){
+                    message = "Before you could do that, the ghost rushes you, killing one of your friends."
+                    deadFriends++;
             break;
             }
             if ((input.includes("amulet") )
@@ -488,74 +529,102 @@ event.preventDefault();
             && inventory.indexOf("Amulet")>-1){
                  message = "You put the amulet in the hole!"
                  currentStatus[15] = status3[15];
+                 currentPOV[15] = POVstatus3[15];
              break;
              }
-             if ((input.includes("fire") || input.includes("torch") )
+             if ((input.includes("fire") || input.includes("torch"))
              && currentStatus[15] === status3[15]
              && inventory.indexOf("Amulet")>-1){
-                  message = "You light the amulet on fire. Your torch goes out, (it's more pointy than you remember) but it causes the amulet it to shine a light onto the treehouse!"
+                  message = "You break off a piece of your torch to keep the amulet lit. You are left with a broken, pointy stick, and the fire causes the amulet it to shine a light onto the mausoleum!"
                   inventory.push("Stake")
                   inventory = inventory.filter(item => item!=="Lit_Torch")
-                  currentStatus[15] = status4[15];                
+                  currentStatus[15] = status4[15];
+                  currentPOV[15] = POVstatus4[15];                
                     if (currentStatus[16]=== status2[16]){
-                        message = "You light the amulet on fire. Your torch goes out, (it's more pointy than you remember) but it causes the amulet to shine a light onto the mirror in the treehouse, reflecting into the piano room. You overhear the vampire say, SUNRISE ALREADY? I BETTER GET TO BED!"
+                        message = "You break off a piece of your torch to keep the amulet lit. You are left with a broken, pointy stick, and the fire causes the amulet it to shine a light onto the mirror on the mausoleum, reflecting into the piano room. You overhear the vampire say, SUNRISE ALREADY? I BETTER GET TO BED!"
                         currentStatus[16] = status3[16];
                         currentStatus[14] = status2[14];
                         currentStatus[6] = status3[6];
+                        currentPOV[16] = POVstatus3[16];
+                        currentPOV[14] = POVstatus2[14];
+                        currentPOV[6] = POVstatus3[6];
+                        
+                        currentPOV[13] = POVstatus3[13]
 
                     }
                     if (currentStatus[16]===status1[16]){
-                        currentStatus[16]= status3[16]
+                        currentStatus[16]= status3[16];
+                        currentPOV[16] = POVstatus3[16];
+
+                        currentPOV[13] = POVstatus3[13];
                     }
               break;
               }
               break;
 
         case "map_21":
-            if ((currentStatus[16] === status1[16] || currentStatus[16] === status3[16] )
+            if ((currentStatus[16] === status1[16] || currentStatus[16] === status3[16])
             && (input.includes("mirror")  )
             && inventory.indexOf("Mirror")>-1){
-                message = "You place the mirror on the treehouse"
+                message = "You place the mirror on the mausoleam";
                     if (currentStatus[15] === status4[15] && currentStatus[16]===status3[16]  ){
-                        message = "You place the mirror on the treehouse, reflecting the light from the amulet into the piano room. You overhear the vampire say, SUNRISE ALREADY? I BETTER GET TO BED!"
+                        message = "You place the mirror on the mausoleam, reflecting the light from the amulet into the piano room. You overhear the vampire say, SUNRISE ALREADY? I BETTER GET TO BED!";
                         currentStatus[16] = status4[16];
                         currentStatus[14] = status2[14];
                         currentStatus[6] = status3[6];
+                        currentPOV[16] = POVstatus4[16];
+                        currentPOV[14] = POVstatus2[14];
+                        currentPOV[6] = POVstatus3[6];
+                        
+                        currentPOV[13] = POVstatus4[13];
                     }
                     if (currentStatus[16]===status1[16]){
-                        currentStatus[16] = status2[16]
+                        currentStatus[16] = status2[16];
+                        currentPOV[16] = POVstatus2[16];
+
+                        currentPOV[13] = POVstatus2[13];
                     }
                 break;
             }
+            break;
         case "map_25":
             if ((currentStatus[17] === status1[17] )
             && (input.includes("clown") )
             && inventory.indexOf("Clown_Toy")>-1){
-                message = "You gave the dog the squeaky toy, and he dropped his stick!"
-                currentStatus[17] = status2[17]
+                message = "You gave the dog the squeaky toy, and he dropped his stick!";
+                currentStatus[17] = status2[17];
+                currentPOV[17] = POVstatus2[17];
                 inventory = inventory.filter(item => item!=="Clown_Toy")                
                 break;
             }
             if ((currentStatus[17] === status2[17] )
             && (input.includes("stick") )){
-                message = "You picked up the stick!"
-                currentStatus[17] = status3[17]
-                inventory.push("Stick")
+                message = "You picked up the stick!";
+                currentStatus[17] = status3[17];
+                currentPOV[17] = POVstatus3[17];
+                inventory.push("Stick");
 
                 if (inventory.indexOf("Toilet_Paper")>-1){
-                    message = "You picked up the stick! It fits perfectly in the roll of TP, creating a torch! It just needs something to light it."
-                    inventory.push("Unlit_Torch")
-                    inventory = inventory.filter(item => item!=="Stick" && item!=="Toilet_Paper")
+                    message = "You picked up the stick! It fits perfectly in the roll of TP, creating a torch! It just needs something to light it.";
+                    inventory.push("Unlit_Torch");
+                    inventory = inventory.filter(item => item!=="Stick" && item!=="Toilet_Paper");
 
                 }
 
                 break;
             }
+            if (input.includes("whistle") && inventory.indexOf("Dog_Whistle")>-1){
+                message = "You blow the dog whistle in front of the dog. He gets up, looking alert, then lays back down. But you get the sense if you blew this in another room, it would attract the dog to that room."
+            }
+            break;
         default:
             message = "You can't do that"
             break;
     }
 
+    if (input.includes("whistle") && inventory.indexOf("Dog_Whistle") > -1 && message ==="You can't do that"){
+        message = "You blow the whitstle, and the dog comes running in the room! But...he sees nothing of interest and leaves"
+    }
 
 
 
@@ -565,7 +634,7 @@ event.preventDefault();
     console.log(inventory)
     $("#screen").empty();
     $("#screen").append(message);
-
+    message="";
     renderInventory();
 
 }
@@ -813,8 +882,8 @@ function renderMap(direction){
     // .attr("src", "drawings/map_0.png")
     .attr("src", "drawings/"+room +".png")
 
-    $("#mapScreen").empty();
-    $("#mapScreen").append(map);
+    $("#justMap").empty();
+    $("#justMap").append(map);
 
 
 
@@ -842,14 +911,15 @@ var briefDescription = $("<p>")
 $("#displayRoom").empty()
 $("#displayRoom").append(renderRoomName)
 $("#displayRoom").append(briefDescription)
+$("#displayRoom").append(deadFriends)
 
 var roomPOV = currentPOV[indexNumber]
 
 var POV = $("<img>")
 .attr("src", "rooms1/"+roomPOV+".png")
 // .attr("src", "rooms1/base_room.png")
-.attr("width", "20%")
-.attr("height", "20%");
+.attr("width", "40%")
+.attr("height", "30%");
 
 $("#pov").empty();
 $("#pov").append(POV);
