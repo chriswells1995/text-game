@@ -87,8 +87,8 @@ var status1= [
     "Nothing out of the oridinary",
     "Nothing out of the ordinary",
     "You see a large blacksmith setup! The only mold you recognize looks like it would shape a bullet. Too bad there's no fire.",
-    "Nothing to see here",
-    "A vampire sits with his eyes closed, elegently playing a piano. You think he can't see you, but he seems to be chuckling...",
+    "The mausoleam is up ahead, and you can see into the piano room through a window.",
+    "A vampire sits with his eyes closed, elegantly playing a piano. You think he can't see you, but he seems to be chuckling...",
     "This rundown old attic has a giant hole in the side! You feel it get colder and breezier as a ghost appears before you!",
     "This mausoleam is missing a pillar. You wonder if you could put something with a simmilar design here to make it more symmetrical.",
     "A dog sits in a doghouse, chewing on a large stick. It doesn't seem to mind you."
@@ -277,6 +277,7 @@ event.preventDefault();
             else if(currentStatus[1] === status1[1] && inventory.indexOf("Loaded_Gun")===-1){
                 message = "Before you could do that, the werewolf rushes you, killing one of your friends, then goes back to its meal.";
                 deadFriends++;
+                break;
             }
             else if (input.includes("whistle") && currentStatus[1]===status2[1]){
                 currentStatus[1] = status3[1];
@@ -285,9 +286,16 @@ event.preventDefault();
                 inventory.push("Dog_Whistle");
                 break;
             }
+            if ((input.includes("stab") || input.includes("throw"))
+            &&inventory.indexOf("Silverware")>-1){
+                message = "You weren't quick enough with the silverware and the werewolf killed one of your friends! There must be a better way to weaponize these utencils!";
+                deadFriends++;
+                break;
+            }
             break;
         case "map_3":
-            if (input.includes("silverware") &&  currentStatus[3]===status1[3]){
+            if ((input.includes("silverware") || input.includes('spoon') || input.includes("fork") || input.includes("knife"))
+            &&  currentStatus[3]===status1[3]){
             message = "You picked up the silverware";
             console.log("adding silverware");
             inventory.push("Silverware");
@@ -326,7 +334,13 @@ event.preventDefault();
             currentStatus[4] = status3[4]
             currentPOV[4] = POVstatus3[4];
             break;
-            }            
+            }
+            if (input.includes("unravel")
+            && currentStatus[4] === status1[4]){
+                message = "You try to unravel the Mummy. This was a dumb idea and he kills one of your friends."
+                deadFriends++;
+                break;
+            }
             break;
         case "map_6":
             if (input.includes("clown")
@@ -336,6 +350,10 @@ event.preventDefault();
             currentStatus[5] = status2[5];
             currentPOV[5] = POVstatus2[5];
             break;
+            }
+            if (input.includes("pillar")){
+                message = "The pillar is too heavy to pick up, and it wouldn't math with mausoleam anyway. Find something flatter and more rectangular."
+                break;
             }
             break;
             
@@ -350,6 +368,7 @@ event.preventDefault();
             && currentStatus[6] === status3[6]
             && inventory.indexOf("Hammer")>-1){
             message = "You killed the vampire! You win! Total friends lost: "+ deadFriends;
+            inventory = inventory.filter(item => item!=="Stake");
             currentStatus[6] = status4[6];
             currentPOV[6] = POVstatus4[6];
             break;
@@ -359,7 +378,7 @@ event.preventDefault();
             message = "Under the pillow you see a small sheet of paper with the word SWORDFISH";
             currentStatus[6] = status2[6];
             currentPOV[6] = POVstatus2[6];
-            inventory.push("Password (swordfish)");
+            inventory.push("Password");
             break;
             }
 
@@ -430,11 +449,20 @@ event.preventDefault();
                 inventory.push("Mirror");
                 break;
             }
+            if (input.includes("poop") ||
+            input.includes("pee")){
+                message = "Well, when you gotta go, you gotta go.";
+                break;
+            } 
+            if (input.includes("flush")){
+                message = "Uh oh, I think it's clogged.";
+                break;
+            } 
             break;
         case "map_13":
             if ((currentStatus[9] === status1[9] )
             && (input.includes("swordfish") || input.includes("password"))
-            && inventory.indexOf("Password (swordfish)")>-1){
+            && inventory.indexOf("Password")>-1){
                 message = "You unloced the safe! It looks like there's a gun inside!";
                 currentStatus[9] = status2[9];
                 currentPOV[9] = POVstatus2[9];
@@ -442,7 +470,7 @@ event.preventDefault();
             }
             if ((currentStatus[9] === status2[9])
             && input.includes("gun")
-            && inventory.indexOf("Password (swordfish)")>-1){
+            && inventory.indexOf("Password")>-1){
                 message = "You picked up the gun! No bullets though.";
                 currentStatus[9] = status3[9];
                 currentPOV[9] = POVstatus3[9];
@@ -485,7 +513,10 @@ event.preventDefault();
                 
                 break;
             }
-
+            if (input.includes("anvil")){
+                message = "As much as you'd like to drop this anvil on a monster like in Looney Tunes, you realize that's impractical";
+                break;
+            }
             break;
         case "map_18":
             if (currentStatus[14] === status1[14] && room === "map_18"){
@@ -497,7 +528,8 @@ event.preventDefault();
             && (input.includes("fire")  || input.includes("torch") || input.includes("light"))
             && input.includes("amulet")
             && inventory.indexOf("Amulet")>-1){
-                message = "You activated the amulet, shining the bright light, to no effect. Enraged, the vampire kills one of your friends. Perhaps you can be more sneaky about this.";
+                message = "You activated the amulet, shining the bright light. At first the vampire seems afraid, but it seems the fake sunlight has no physical effect." 
+                +"Enraged, the vampire kills one of your friends. Perhaps you can be more sneaky about this.";
                 deadFriends++;
                 break;
             }
@@ -509,6 +541,16 @@ event.preventDefault();
                 inventory.push("Hammer");
                 break;
             }
+            if (currentStatus[14] === status2[14] &&
+                input.includes("play")){
+                    message = "You play the piano. You're not as good as the vampire, and that makes you sad. Then you remember you're about to kill him and you feel a little better.";
+                    break;
+                }
+            if (currentStatus[14] === status3[14] &&
+                input.includes("play")){
+                    message = "You play the piano, but all the songs you know use the one note that's now missing a hammer. So it sounds terrible.";
+                    break;
+                }                
             break;
         case "map_19":
            if ((input.includes("vacuum") || input.includes("suck") )
@@ -527,7 +569,8 @@ event.preventDefault();
             if ((input.includes("amulet") )
             && currentStatus[15] === status2[15]
             && inventory.indexOf("Amulet")>-1){
-                 message = "You put the amulet in the hole!"
+                 message = "You put the amulet in the hole!";
+                 inventory = inventory.filter(item => item!=="Amulet") 
                  currentStatus[15] = status3[15];
                  currentPOV[15] = POVstatus3[15];
              break;
@@ -567,6 +610,7 @@ event.preventDefault();
             && (input.includes("mirror")  )
             && inventory.indexOf("Mirror")>-1){
                 message = "You place the mirror on the mausoleam";
+                inventory = inventory.filter(item => item!=="Mirror");
                     if (currentStatus[15] === status4[15] && currentStatus[16]===status3[16]  ){
                         message = "You place the mirror on the mausoleam, reflecting the light from the amulet into the piano room. You overhear the vampire say, SUNRISE ALREADY? I BETTER GET TO BED!";
                         currentStatus[16] = status4[16];
@@ -615,6 +659,11 @@ event.preventDefault();
             }
             if (input.includes("whistle") && inventory.indexOf("Dog_Whistle")>-1){
                 message = "You blow the dog whistle in front of the dog. He gets up, looking alert, then lays back down. But you get the sense if you blew this in another room, it would attract the dog to that room."
+            break;
+            }
+            if (input.includes("pet")){
+                message = "You pet the dog. He seems to like you!"
+                break;
             }
             break;
         default:
@@ -876,20 +925,16 @@ function renderMap(direction){
     }
             console.log(placement)
 
-    var map = $("<img>")
-    .attr("width", "10%")
-    .attr("height", "10%")
-    // .attr("src", "drawings/map_0.png")
-    .attr("src", "drawings/"+room +".png")
+  
 
     $("#justMap").empty();
-    $("#justMap").append(map);
+    // $("#justMap").append(map);
+    
 
 
 
 
-
-    renderRoom(room)
+    renderRoom(room);
 
 }
 
@@ -917,6 +962,7 @@ var roomPOV = currentPOV[indexNumber]
 
 var POV = $("<img>")
 .attr("src", "rooms1/"+roomPOV+".png")
+.attr("id", "povID")
 // .attr("src", "rooms1/base_room.png")
 .attr("width", "40%")
 .attr("height", "30%");
@@ -924,15 +970,41 @@ var POV = $("<img>")
 $("#pov").empty();
 $("#pov").append(POV);
 
+var map = $("<img>")
+.attr("width", "10%")
+.attr("height", "10%")
+// .attr("src", "drawings/map_0.png")
+.attr("src", "drawings/"+roomNumber +".png");
+
+var blank = $("<img>")
+.attr("width", "10%")
+.attr("height", "10%")
+.attr("src", "drawings/map_blank.png");  
+
+
+$("#povID").before(blank);
+$("#povID").after(map);
+
 }
 
 function renderInventory(){
 
     $("#inventorySpace").empty();
+
+    var invntoryStart = $("<img>")
+    .attr("id", "inventoryStart")
+    .attr("src", "inventory/inventory.png")
+    .attr("height", "5%")
+    .attr("width", "5%");
+
+    $("#inventorySpace").append(invntoryStart);
+
     for (i=0;i<inventory.length; i++){
-        var inventoryItem = $("<li>")
-        .text(inventory[i])
-        $("#inventorySpace").append(inventoryItem)
+        var inventoryItem = $("<img>")
+        .attr("src", "inventory/"+ inventory[i] + ".png")
+        .attr("height", "5%")
+        .attr("width", "5%");
+        $("#inventoryStart").after(inventoryItem)
     }
 
 }
