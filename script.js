@@ -577,7 +577,7 @@ event.preventDefault();
              }
              if ((input.includes("fire") || input.includes("torch"))
              && currentStatus[15] === status3[15]
-             && inventory.indexOf("Amulet")>-1){
+             && inventory.indexOf("Amulet")===-1){
                   message = "You break off a piece of your torch to keep the amulet lit. You are left with a broken, pointy stick, and the fire causes the amulet it to shine a light onto the mausoleum!"
                   inventory.push("Stake")
                   inventory = inventory.filter(item => item!=="Lit_Torch")
